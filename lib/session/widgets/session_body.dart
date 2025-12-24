@@ -21,6 +21,7 @@ class SessionBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stepActionMessage = switch(step.type) {
+      // LANGT
       StepType.inhale => 'Inhala',
       StepType.exhale => 'Exhala',
       StepType.hold => 'Mantén la respiración',
@@ -43,8 +44,9 @@ class SessionBody extends StatelessWidget {
               const Spacer(flex: 2),
 
               // Tiempo restante
-              const Text('Tiempo restante:'),
+              const Text('Tiempo restante:'), // LANGT
               SizedBox(height: availableHeight * 0.01),
+              // TODO: Considerar horas.
               Text(
                 '$minutes:$seconds',
                 style: Theme.of(context).textTheme.headlineSmall,

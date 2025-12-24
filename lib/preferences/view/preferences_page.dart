@@ -44,7 +44,7 @@ class PreferencesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ajustes')),
+      appBar: AppBar(title: const Text('Ajustes')), // LANGT
       body: BlocBuilder<PreferencesCubit, PreferencesState>(
         builder: (context, state) {
           bool customThemeEnabled = state.customThemeEnabled;
@@ -54,11 +54,13 @@ class PreferencesView extends StatelessWidget {
 
                 // Custom theme toggle
                 SwitchListTile(
-                  title: Text('Tema personalizado'),
+                  title: Text('Tema personalizado'), //LANGT
                   value: customThemeEnabled, 
                   onChanged: (value) => onCustomThemeToggled(context, value),
                 ),
 
+                // FIXME: No mostrar el selector de tema si el tema personalizado no está activado.
+                // TODO: Agregar la opción de elegir un tema personalizado.
                 // Theme selector
                 ListTile(
                   enabled: customThemeEnabled,
@@ -71,7 +73,7 @@ class PreferencesView extends StatelessWidget {
 
                 // Sound toggle
                 ListTile(
-                  title: Text('Sonido'),
+                  title: Text('Sonido'), // LANGT
                   trailing: Icon(
                     state.isMuted ? Icons.volume_off : Icons.volume_up,
                   ),
@@ -80,7 +82,7 @@ class PreferencesView extends StatelessWidget {
 
                 // Reset to defaults
                 ListTile(
-                  title: Text('Restablecer valores predeterminados'),
+                  title: Text('Restablecer valores predeterminados'), // LANGT
                   trailing: Icon(Icons.restore),
                   onTap: () {
                     context.read<PreferencesCubit>().onResetToDefaults();
@@ -112,11 +114,11 @@ class ThemeSelector extends StatelessWidget {
       segments: [
         ButtonSegment(
           value: ThemeMode.light,
-          label: const Text('Light'),
+          label: const Text('Light'), // LANGT
         ),
         ButtonSegment(
           value: ThemeMode.dark,
-          label: const Text('Dark'),
+          label: const Text('Dark'), // LANGT
         ),
       ],
       selected: {selected},

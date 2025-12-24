@@ -29,7 +29,7 @@ class HomeBody extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            title: Text('Respiro App'),
+            title: Text('Respiro App'), // LANGT
             actions: [
               HomeBarActions(
                 onPreferencesPressed: () => _onPreferencesPressed(context)

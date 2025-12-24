@@ -101,6 +101,7 @@ class _AnimatedSideButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Tamaños dinamicos
     final double targetWidth = isVisible ? 60 : 0; // Fixed: 0 when not visible
     return SizedBox( 
       width: targetWidth,
@@ -131,6 +132,7 @@ class _AnimatedGap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Tamaños dinamicos
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,

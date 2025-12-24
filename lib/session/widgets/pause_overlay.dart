@@ -19,6 +19,7 @@ class PauseOverlay extends StatelessWidget {
             // Es recomendable ponerle un tinte suave encima del blur
             // para que el texto de pausa se lea mejor.
             color: Colors.black.withAlpha(50),
+            //LANGT
             child: Center(child: Text('Pausado', style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Colors.white)),),
           ),
         ),

@@ -17,6 +17,7 @@ class CollapsedDock extends StatelessWidget {
     });
 
   @override
+  // TODO: Tamaños dinamicos
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -43,13 +44,13 @@ class CollapsedDock extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Perfil seleccionado:",
+                        "Perfil seleccionado:", // LANGT
                         style: Theme.of(context).textTheme.titleSmall,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         // Si es null, muestra un texto por defecto
-                        selectedProfile?.title ?? "Selecciona un perfil",
+                        selectedProfile?.title ?? "Selecciona un perfil", // LANGT
                         style: Theme.of(context).textTheme.titleLarge,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -80,6 +81,7 @@ class CompleteProfileList extends StatelessWidget {
   });
 
   @override
+  // TODO: Tamaños dinamicos
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -94,7 +96,7 @@ class CompleteProfileList extends StatelessWidget {
         children: [
           // Una pequeña muesca visual para indicar que se puede arrastrar
           Dockhandle(screenHeight: screenHeight,),
-          Text("Perfiles Disponibles", style: Theme.of(context).textTheme.titleLarge),
+          Text("Perfiles Disponibles", style: Theme.of(context).textTheme.titleLarge), // LANGT
           const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(

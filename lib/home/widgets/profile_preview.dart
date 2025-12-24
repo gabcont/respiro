@@ -17,12 +17,12 @@ class ProfilePreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    // TODO: Tamaños dinamicos
     final mainContent = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          profile?.title ?? 'No profile selected', 
+          profile?.title ?? 'No profile selected', //  LANGT
           style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
@@ -39,10 +39,12 @@ class ProfilePreviewCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
-                "${step.duration.toInt()}s",
+                // TODO: Verificar que no se pase de 60s y mostrar en min si es necesario
+                "${step.duration.toInt()}s", // LANGT
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: switch (step.type) {
+                    // TODO: Usar colores del tema 
                     StepType.inhale => Colors.lightBlueAccent,
                     StepType.hold => Colors.grey,
                     StepType.exhale => Colors.redAccent,
@@ -53,7 +55,7 @@ class ProfilePreviewCard extends StatelessWidget {
           ),
         const SizedBox(height: 24),
         Text(
-          profile?.longDescription ?? 'Please select a profile to see details.',
+          profile?.longDescription ?? 'Please select a profile to see details.', // LANGT
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
@@ -61,6 +63,7 @@ class ProfilePreviewCard extends StatelessWidget {
     );
 
     return Card(
+      // TODO: Tamaños dinamicos
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Padding(
         padding: const EdgeInsets.all(24.0),

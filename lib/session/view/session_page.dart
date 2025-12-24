@@ -54,7 +54,7 @@ class _SessionPageState extends State<SessionPage>
 
   void _onResetPressed(BuildContext context) {
     context.read<SessionBloc>().add(SessionReset());
-    _triggerBackgroundRipple(context: context, color: Colors.lightBlueAccent);
+    _triggerBackgroundRipple(context: context, color: Colors.lightBlueAccent); // TODO: Estandarizar colores
   }
 
   @override
@@ -85,7 +85,8 @@ class _SessionPageState extends State<SessionPage>
               prev.currentStep != cur.currentStep;
         },
         listener: (context, state) {
-          print(state.status);
+          
+          // TODO: Encapsular funcionamiento del controlador en funciones
           switch (state.status) {
             case SessionStatus.initial:
               break;
@@ -142,6 +143,7 @@ class _SessionPageState extends State<SessionPage>
           children: [
             BlocBuilder<SessionBloc, SessionState>(
               builder: (context, state) {
+                // TODO: mover calculos matematicos a state
                 final remainingTime = state.sessionDuration - state.elapsedTime;
                 final minutes = remainingTime.inMinutes
                     .remainder(60)
@@ -170,7 +172,7 @@ class _SessionPageState extends State<SessionPage>
                     // Contenido principal
                     Padding(
                       padding: const EdgeInsets.only(
-                        bottom: 160.0,
+                        bottom: 160.0, // TODO: Ajustar según tamaño de la pantalla
                       ), // Espacio reservado para los controles inferiores
                       child: SessionBody(
                         minutes: minutes,
@@ -250,6 +252,8 @@ class _ActionsContainer extends StatelessWidget {
 
   const _ActionsContainer({super.key, required this.actionButtons});
 
+  // TODO: Posicionamiento dinamico de los botones segun el tamaño de pantalla.
+  // TODO: Asegurar que no solape con la barra de acciones de android.
   @override
   Widget build(BuildContext context) {
     return Positioned(

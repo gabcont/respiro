@@ -17,7 +17,7 @@ class HomeBarActions extends StatelessWidget {
 
         IconButton(
           onPressed: onPreferencesPressed,
-          tooltip: 'Ajustes',
+          tooltip: 'Ajustes', // LANGT
           icon: Icon(Icons.settings),
         ),
         

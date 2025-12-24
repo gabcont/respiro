@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// TODO: Agregar colores para cada elemento que use colores personalizados en la app.
+
 @immutable
 class BreathingColors extends ThemeExtension<BreathingColors> {
   const BreathingColors({
@@ -37,7 +39,7 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
     );
   }
 
-  // Valores por defecto sugeridos
+  // Valores por defecto su1geridos
   static const light = BreathingColors(
     inhale: Color.fromARGB(255, 84, 146, 254),
     exhale: Color(0xFFFFAB40),
@@ -51,4 +53,6 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
     exhale: Color(0xFF513b22),   // Orange 200
     hold: Color(0xFF282f33), // BlueGrey 200
   );
+
+
 }

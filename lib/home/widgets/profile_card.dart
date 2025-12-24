@@ -14,6 +14,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Tamaños dinamicos
     return Card(
       color: Theme.of(  context).colorScheme.primaryContainer,
       margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),

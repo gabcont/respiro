@@ -11,9 +11,10 @@ class PlayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Tamaños dinamicos
     return IconButton(
       onPressed: onPressed,
-      tooltip: 'Iniciar sesión de respiración',
+      tooltip: 'Iniciar sesión de respiración', // LANGT
       icon: Icon(
         Icons.play_circle,
         size: 100,
