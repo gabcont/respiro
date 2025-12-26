@@ -12,5 +12,8 @@ abstract class SoundService {
   Future<void> loadAudioAsset(Sounds sound);
   Future<void> unloadAudioAsset(Sounds sound);
   Future<void> playSound(Sounds sound);
+  bool get isSoundMuted;
+  double get currentVolume;
+  void setVolume(double volume);
   void dispose();
 }

@@ -3,6 +3,7 @@ part of 'session_bloc.dart';
 enum SessionStatus { initial, resumed, stepChanged, paused, completed, reseted, canceled }
 
 class SessionState extends Equatable {
+  
   final SessionStatus status;
   final Duration sessionDuration;
   final Duration elapsedTime;

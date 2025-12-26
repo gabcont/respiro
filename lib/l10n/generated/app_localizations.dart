@@ -211,6 +211,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Tiempo restante:'**
   String get timeRemainingLabel;
+
+  /// No description provided for @languageLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Idioma'**
+  String get languageLabel;
+
+  /// No description provided for @spanishLanguageLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Español'**
+  String get spanishLanguageLabel;
+
+  /// No description provided for @englishLanguageLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Inglés'**
+  String get englishLanguageLabel;
 }
 
 class _AppLocalizationsDelegate

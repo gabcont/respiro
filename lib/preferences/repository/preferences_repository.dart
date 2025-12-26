@@ -31,4 +31,8 @@ abstract class PreferencesRepository {
   Future<void> saveIsFirstTime(bool isFirstTime);
 
   Future<bool> getIsFirstTime();
+
+  Future<void> saveLocale(Locale locale);
+
+  Future<Locale> getLocale();
 }

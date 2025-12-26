@@ -5,7 +5,7 @@ import 'package:respiro/l10n/generated/app_localizations.dart';
 
 import 'package:respiro/profiles/profiles.dart';
 
-
+// FIXME: Seleccionar perfil no cambia estado
 class CollapsedDock extends StatelessWidget {
   
   final BreathingProfile? selectedProfile;

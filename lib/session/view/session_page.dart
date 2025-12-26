@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:respiro/session/widgets/widgets.dart';
 import 'package:respiro/session/bloc/session_bloc.dart';
+import 'package:respiro/session/audio_cubit/session_audio_cubit.dart';
 
 import 'package:respiro/profiles/profiles.dart';
 import 'package:respiro/theme/theme.dart';
@@ -54,16 +55,25 @@ class _SessionPageState extends State<SessionPage>
 
   void _onResetPressed(BuildContext context) {
     context.read<SessionBloc>().add(SessionReset());
-    _triggerBackgroundRipple(context: context, color: Colors.lightBlueAccent); // TODO: Estandarizar colores
+    _triggerBackgroundRipple(
+      context: context,
+      color: Colors.lightBlueAccent,
+    ); // TODO: Estandarizar colores
+  }
+
+  void _onSoundToggled(BuildContext context, bool value) {
+    context.read<SessionAudioCubit>().toggleSound();
   }
 
   @override
   void initState() {
     super.initState();
-    context.read<SessionBloc>().add(SessionStarted(
-                    profile: widget.activeProfile,
-                    sessionDuration: widget.sessionDuration,
-                  ));
+    context.read<SessionBloc>().add(
+      SessionStarted(
+        profile: widget.activeProfile,
+        sessionDuration: widget.sessionDuration,
+      ),
+    );
     _controller = AnimationController(vsync: this);
   }
 
@@ -79,13 +89,28 @@ class _SessionPageState extends State<SessionPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        forceMaterialTransparency: true,
+        elevation: 0,
+        actions: [
+          BlocBuilder<SessionAudioCubit, SessionAudioState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () => _onSoundToggled(context, state.isSoundDisabled),
+                icon: Icon(state.isSoundDisabled ? Icons.volume_off : Icons.volume_up),
+              );
+            },
+          ),
+        ],
+      ),
       body: BlocListener<SessionBloc, SessionState>(
         listenWhen: (prev, cur) {
           return prev.status != cur.status ||
               prev.currentStep != cur.currentStep;
         },
         listener: (context, state) {
-          
           // TODO: Encapsular funcionamiento del controlador en funciones
           switch (state.status) {
             case SessionStatus.initial:
@@ -172,7 +197,8 @@ class _SessionPageState extends State<SessionPage>
                     // Contenido principal
                     Padding(
                       padding: const EdgeInsets.only(
-                        bottom: 160.0, // TODO: Ajustar según tamaño de la pantalla
+                        bottom:
+                            160.0, // TODO: Ajustar según tamaño de la pantalla
                       ), // Espacio reservado para los controles inferiores
                       child: SessionBody(
                         minutes: minutes,
@@ -239,7 +265,7 @@ class _SessionPageState extends State<SessionPage>
           controller: inkController,
           referenceBox: bgBox,
           position: localPositionInBg,
-          color: color, 
+          color: color,
           textDirection: TextDirection.ltr,
           containedInkWell: true,
         )

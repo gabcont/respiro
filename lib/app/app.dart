@@ -39,6 +39,7 @@ class App extends StatelessWidget {
       ],
       child: BlocProvider(
         create: (context) => PreferencesCubit(
+          soundService: context.read<SoundService>(),
           profilesRepository: context.read<ProfilesRepository>(),
           preferencesRepository: context.read<PreferencesRepository>(),
         ),
@@ -57,7 +58,8 @@ class AppView extends StatelessWidget {
     return BlocBuilder<PreferencesCubit, PreferencesState>(
       buildWhen: (previous, current) {
         return previous.themeMode != current.themeMode || 
-               previous.customThemeEnabled != current.customThemeEnabled;
+               previous.customThemeEnabled != current.customThemeEnabled ||
+                previous.locale != current.locale;
       },
       builder: (context, state) {
         return MaterialApp.router(
@@ -67,6 +69,7 @@ class AppView extends StatelessWidget {
           theme: RespiroTheme.lightTheme,
           darkTheme: RespiroTheme.darkTheme,
           routerConfig: appRouter.router,
+          locale: state.locale,
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,

@@ -22,5 +22,9 @@
     "lightThemeLabel" : "Light Theme",
     "darkThemeLabel" : "Dark Theme",
 
-    "timeRemainingLabel" : "Time remaining:"
+    "timeRemainingLabel" : "Time remaining:",
+
+    "languageLabel" : "Language",
+    "spanishLanguageLabel" : "Spanish",
+    "englishLanguageLabel" : "English"
 }

@@ -19,8 +19,8 @@ Future<void> main() async {
 
   // SharedPreferences
   WidgetsFlutterBinding.ensureInitialized();
-  final sp = await SharedPreferences.getInstance();
-  final preferencesRepository = SPPreferencesRepositoryImpl(sp);
+  final sharedPreferences = await SharedPreferences.getInstance();
+  final preferencesRepository = SPPreferencesRepositoryImpl(preferencesRepository: sharedPreferences);
 
   // Isar Database initialization
   final isar = await initIsar();

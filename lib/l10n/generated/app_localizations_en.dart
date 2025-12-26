@@ -64,4 +64,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeRemainingLabel => 'Time remaining:';
+
+  @override
+  String get languageLabel => 'Language';
+
+  @override
+  String get spanishLanguageLabel => 'Spanish';
+
+  @override
+  String get englishLanguageLabel => 'English';
 }

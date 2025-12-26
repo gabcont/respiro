@@ -19,7 +19,6 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   final SessionTimerService timer;
   final SoundService soundService;
 
-  bool _audioDisabled = false;
   StreamSubscription? _streamSubscription;
 
   SessionBloc({
@@ -54,9 +53,6 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
       _streamSubscription = timer.timerStream.listen((duration) {
         add(TimerTicked(elapsedTime: duration));
       });
-
-      // Get shared preferences
-      _audioDisabled = await preferencesRepository.getIsMuted();
 
       // Emitir el estado inicial del sesión
       emit(state.copyWith(

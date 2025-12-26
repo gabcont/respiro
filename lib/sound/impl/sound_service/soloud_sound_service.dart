@@ -5,13 +5,14 @@ class SoloudSoundService implements SoundService {
 
   final SoLoud soloud;
   late Map<Sounds, AudioSource> _sources;
-  late 
+  double volume;
   bool isMuted;
 
   SoloudSoundService(
     {
       required this.soloud,
       this.isMuted = false,
+      this.volume = 1.0,
     }
   ) {
     _sources = {};
@@ -49,7 +50,6 @@ class SoloudSoundService implements SoundService {
       _sources[sound] = source;
     }
     else {
-      print('Sonido ya cargado');
     }
 
   }
@@ -65,11 +65,21 @@ class SoloudSoundService implements SoundService {
     if(!isMuted && _sources.containsKey(sound)) {
       //await _sources[sound]?.stop();
       await soloud.play(_sources[sound]!);
-      print('reproduciendo ${sound}');
     }
     else {
-      print('Tratando de reproducir audio no cargado: ${sound}');
     }
+  }
+
+  @override
+  bool get isSoundMuted => isMuted;
+  
+  @override
+  double get currentVolume => volume;
+  
+  @override
+  void setVolume(double volume) {
+    this.volume = volume;
+    soloud.setGlobalVolume(volume);
   }
 
   @override

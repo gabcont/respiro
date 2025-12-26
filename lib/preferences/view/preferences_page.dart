@@ -20,7 +20,7 @@ class PreferencesPage extends StatelessWidget {
 class PreferencesView extends StatelessWidget {
   const PreferencesView({super.key});
 
-  void onCustomThemeToggled(BuildContext context, bool isEnabled) {
+  void _onCustomThemeToggled(BuildContext context, bool isEnabled) {
     if(isEnabled) {
       context.read<PreferencesCubit>().onCustomThemeEnabled();  
     }
@@ -29,7 +29,7 @@ class PreferencesView extends StatelessWidget {
     }
   }
 
-  void onThemeModeChanged(BuildContext context, ThemeMode mode) {
+  void _onThemeModeChanged(BuildContext context, ThemeMode mode) {
     if(mode == ThemeMode.dark) {
       context.read<PreferencesCubit>().onDarkModeSelected();
     }
@@ -38,8 +38,14 @@ class PreferencesView extends StatelessWidget {
     }
   }
 
-  void onSoundToggled(BuildContext context, bool isEnabled) {
+  void _onSoundToggled(BuildContext context, bool isEnabled) {
     context.read<PreferencesCubit>().onMutedToggled();
+  }
+
+  void _onLocaleChanged(BuildContext context, Locale? locale) {
+    if(locale != null) {
+      context.read<PreferencesCubit>().onLocaleChanged(locale);
+    }
   }
 
   @override
@@ -58,20 +64,20 @@ class PreferencesView extends StatelessWidget {
                 SwitchListTile(
                   title: Text(lcl.customThemeLabel),
                   value: customThemeEnabled, 
-                  onChanged: (value) => onCustomThemeToggled(context, value),
+                  onChanged: (value) => _onCustomThemeToggled(context, value),
                 ),
 
-                // FIXME: No mostrar el selector de tema si el tema personalizado no está activado.
                 // TODO: Agregar la opción de elegir un tema personalizado.
                 // Theme selector
-                ListTile(
+                customThemeEnabled ? ListTile(
                   enabled: customThemeEnabled,
                   enableFeedback: customThemeEnabled,
                   subtitle: ThemeSelector(
                     selected: state.themeMode,
-                    onSelected: (mode) => onThemeModeChanged(context, mode),
+                    onSelected: (mode) => _onThemeModeChanged(context, mode),
                   ),
-                ),
+                )
+                : const SizedBox.shrink(),
 
                 // Sound toggle
                 ListTile(
@@ -79,7 +85,35 @@ class PreferencesView extends StatelessWidget {
                   trailing: Icon(
                     state.isMuted ? Icons.volume_off : Icons.volume_up,
                   ),
-                  onTap: () => onSoundToggled(context, !state.isMuted),
+                  onTap: () => _onSoundToggled(context, !state.isMuted),
+                ),
+
+                // Language selector
+                ListTile(
+                  title: Text(lcl.languageLabel),
+                  trailing: DropdownButton<Locale>(
+                    icon: Icon(Icons.language),
+                    underline: SizedBox.shrink(),
+                    value: state.locale,
+                    items: AppLocalizations.supportedLocales.map((locale) {
+                      String languageLabel;
+                      switch(locale.languageCode) {
+                        case 'es':
+                          languageLabel = lcl.spanishLanguageLabel;
+                          break;
+                        case 'en':
+                          languageLabel = lcl.englishLanguageLabel;
+                          break;
+                        default:
+                          languageLabel = locale.languageCode;
+                      }
+                      return DropdownMenuItem<Locale>(
+                        value: locale,
+                        child: Text(languageLabel),
+                      );
+                    }).toList(),
+                    onChanged: (locale) => _onLocaleChanged(context, locale),
+                  ),
                 ),
 
                 // Reset to defaults

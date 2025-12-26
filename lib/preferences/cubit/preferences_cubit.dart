@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import 'package:respiro/l10n/locales.dart';
 import 'package:respiro/preferences/preferences.dart';
 import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/sound/sound_service.dart';
 
 
 part 'preferences_state.dart';
@@ -12,10 +14,12 @@ class PreferencesCubit extends Cubit<PreferencesState> {
   
   final ProfilesRepository profilesRepository;
   final PreferencesRepository preferencesRepository;
+  final SoundService soundService;
 
   PreferencesCubit({
     required this.profilesRepository,
     required this.preferencesRepository,
+    required this.soundService,
   }) : super(PreferencesState()) {
     loadPreferences();
   }
@@ -57,8 +61,19 @@ class PreferencesCubit extends Cubit<PreferencesState> {
   }
 
   void onMutedToggled() {
+    if(state.isMuted) {
+      soundService.unmuteSound();
+    }
+    else {
+      soundService.muteSound();
+    }
     preferencesRepository.saveIsMuted(!state.isMuted);
     emit(state.copyWith(isMuted: !state.isMuted));
+  }
+
+  void onLocaleChanged(Locale locale) {
+    preferencesRepository.saveLocale(locale);
+    emit(state.copyWith(locale: locale));
   }
 
   Future<void> onResetToDefaults() async {
