@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:respiro/l10n/generated/app_localizations.dart';
 
 import 'package:respiro/profiles/profiles.dart';
 
@@ -20,11 +21,11 @@ class SessionBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lcl = AppLocalizations.of(context)!;
     final stepActionMessage = switch(step.type) {
-      // LANGT
-      StepType.inhale => 'Inhala',
-      StepType.exhale => 'Exhala',
-      StepType.hold => 'Mantén la respiración',
+      StepType.inhale => lcl.inhale,
+      StepType.exhale => lcl.exhale,
+      StepType.hold => lcl.hold,
     };
 
     return LayoutBuilder(
@@ -44,7 +45,7 @@ class SessionBody extends StatelessWidget {
               const Spacer(flex: 2),
 
               // Tiempo restante
-              const Text('Tiempo restante:'), // LANGT
+              Text(lcl.timeRemainingLabel),
               SizedBox(height: availableHeight * 0.01),
               // TODO: Considerar horas.
               Text(

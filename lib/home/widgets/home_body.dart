@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:respiro/home/cubit/home_cubit.dart';
 
 import 'package:respiro/home/widgets/widgets.dart';
+import 'package:respiro/l10n/generated/app_localizations.dart';
 
 import 'package:respiro/profiles/profiles.dart';
 
@@ -23,13 +24,14 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lcl = AppLocalizations.of(context)!;
     return LayoutBuilder(
       builder: (context, constraints) {
         final bool isPortrait = constraints.maxHeight >= constraints.maxWidth;
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            title: Text('Respiro App'), // LANGT
+            title: Text(lcl.appName), 
             actions: [
               HomeBarActions(
                 onPreferencesPressed: () => _onPreferencesPressed(context)

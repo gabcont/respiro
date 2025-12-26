@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:respiro/home/widgets/widgets.dart';
+import 'package:respiro/l10n/generated/app_localizations.dart';
 
 import 'package:respiro/profiles/profiles.dart';
 
@@ -19,6 +20,7 @@ class CollapsedDock extends StatelessWidget {
   @override
   // TODO: Tamaños dinamicos
   Widget build(BuildContext context) {
+    final lcl = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer, // Un color que resalte
@@ -44,13 +46,13 @@ class CollapsedDock extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Perfil seleccionado:", // LANGT
+                        lcl.selectedProfileLabel,
                         style: Theme.of(context).textTheme.titleSmall,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         // Si es null, muestra un texto por defecto
-                        selectedProfile?.title ?? "Selecciona un perfil", // LANGT
+                        selectedProfile?.title ?? lcl.pleaseSelectProfile,
                         style: Theme.of(context).textTheme.titleLarge,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -83,6 +85,7 @@ class CompleteProfileList extends StatelessWidget {
   @override
   // TODO: Tamaños dinamicos
   Widget build(BuildContext context) {
+    final lcl = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
@@ -96,7 +99,7 @@ class CompleteProfileList extends StatelessWidget {
         children: [
           // Una pequeña muesca visual para indicar que se puede arrastrar
           Dockhandle(screenHeight: screenHeight,),
-          Text("Perfiles Disponibles", style: Theme.of(context).textTheme.titleLarge), // LANGT
+          Text(lcl.availableProfilesLabel, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(

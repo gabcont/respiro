@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:respiro/app/navigation_service/navigation_service.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:respiro/app/router/router.dart';
 
@@ -9,6 +10,8 @@ import 'package:respiro/preferences/cubit/preferences_cubit.dart';
 import 'package:respiro/theme/theme.dart';
 import 'package:respiro/preferences/preferences.dart';
 import 'package:respiro/profiles/profiles.dart';
+
+import 'package:respiro/l10n/generated/app_localizations.dart';
 
 class App extends StatelessWidget {
   const App({super.key, 
@@ -61,6 +64,13 @@ class AppView extends StatelessWidget {
           theme: RespiroTheme.lightTheme,
           darkTheme: RespiroTheme.darkTheme,
           routerConfig: appRouter.router,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            AppLocalizations.delegate,
+          ],
         );
       },
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:respiro/l10n/generated/app_localizations.dart';
 
 import 'package:respiro/profiles/profiles.dart';
 
@@ -18,11 +19,12 @@ class ProfilePreviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Tamaños dinamicos
+    final lcl = AppLocalizations.of(context)!;
     final mainContent = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          profile?.title ?? 'No profile selected', //  LANGT
+          profile?.title ?? lcl.noProfileSelected, 
           style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
@@ -40,7 +42,7 @@ class ProfilePreviewCard extends StatelessWidget {
               ),
               child: Text(
                 // TODO: Verificar que no se pase de 60s y mostrar en min si es necesario
-                "${step.duration.toInt()}s", // LANGT
+                "${step.duration.toInt()} ${lcl.secondsAbbreviation}",
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: switch (step.type) {
@@ -55,7 +57,7 @@ class ProfilePreviewCard extends StatelessWidget {
           ),
         const SizedBox(height: 24),
         Text(
-          profile?.longDescription ?? 'Please select a profile to see details.', // LANGT
+          profile?.longDescription ?? lcl.pleaseSelectProfile,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium,
         ),

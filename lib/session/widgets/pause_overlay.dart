@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
+import 'package:respiro/l10n/generated/app_localizations.dart';
+
 class PauseOverlay extends StatelessWidget {
   const PauseOverlay({
     super.key,
@@ -9,6 +11,7 @@ class PauseOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lcl = AppLocalizations.of(context)!;
     return Positioned.fill(
       // ClipRect es OBLIGATORIO aquí para que el blur no se salga 
       // de los bordes si el widget tiene esquinas redondeadas o márgenes.
@@ -19,8 +22,7 @@ class PauseOverlay extends StatelessWidget {
             // Es recomendable ponerle un tinte suave encima del blur
             // para que el texto de pausa se lea mejor.
             color: Colors.black.withAlpha(50),
-            //LANGT
-            child: Center(child: Text('Pausado', style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Colors.white)),),
+            child: Center(child: Text(lcl.paused, style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Colors.white)),),
           ),
         ),
       ),

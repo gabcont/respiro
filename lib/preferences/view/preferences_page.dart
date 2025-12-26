@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:respiro/l10n/generated/app_localizations.dart';
 
 import 'package:respiro/preferences/cubit/preferences_cubit.dart';
 
@@ -43,8 +44,9 @@ class PreferencesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lcl = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Ajustes')), // LANGT
+      appBar: AppBar(title: Text(lcl.preferencesTitle)),
       body: BlocBuilder<PreferencesCubit, PreferencesState>(
         builder: (context, state) {
           bool customThemeEnabled = state.customThemeEnabled;
@@ -54,7 +56,7 @@ class PreferencesView extends StatelessWidget {
 
                 // Custom theme toggle
                 SwitchListTile(
-                  title: Text('Tema personalizado'), //LANGT
+                  title: Text(lcl.customThemeLabel),
                   value: customThemeEnabled, 
                   onChanged: (value) => onCustomThemeToggled(context, value),
                 ),
@@ -73,7 +75,7 @@ class PreferencesView extends StatelessWidget {
 
                 // Sound toggle
                 ListTile(
-                  title: Text('Sonido'), // LANGT
+                  title: Text(lcl.soundLabel),
                   trailing: Icon(
                     state.isMuted ? Icons.volume_off : Icons.volume_up,
                   ),
@@ -82,7 +84,7 @@ class PreferencesView extends StatelessWidget {
 
                 // Reset to defaults
                 ListTile(
-                  title: Text('Restablecer valores predeterminados'), // LANGT
+                  title: Text(lcl.resetToDefaultsLabel),
                   trailing: Icon(Icons.restore),
                   onTap: () {
                     context.read<PreferencesCubit>().onResetToDefaults();
@@ -110,15 +112,16 @@ class ThemeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lcl = AppLocalizations.of(context)!;
     return SegmentedButton<ThemeMode>(
       segments: [
         ButtonSegment(
           value: ThemeMode.light,
-          label: const Text('Light'), // LANGT
+          label: Text(lcl.lightThemeLabel),
         ),
         ButtonSegment(
           value: ThemeMode.dark,
-          label: const Text('Dark'), // LANGT
+          label: Text(lcl.darkThemeLabel),
         ),
       ],
       selected: {selected},

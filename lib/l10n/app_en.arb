@@ -1,0 +1,26 @@
+{
+    "appName" : "Respiro App",
+
+    "preferencesTooltip": "Preferences",
+    "startSessionTooltip" : "Start breathing session",
+    
+    "inhale" : "Inhale",
+    "exhale" : "Exhale",
+    "hold" : "Hold",
+    "paused" : "Paused",
+    "secondsAbbreviation" : "s",
+
+    "noProfileSelected" : "No profile selected",
+    "pleaseSelectProfile" : "Please select a profile to view details",
+    "selectedProfileLabel" : "Selected Profile:",
+    "availableProfilesLabel" : "Available Profiles",
+
+    "preferencesTitle" : "Preferences",
+    "customThemeLabel" : "Custom Theme",
+    "soundLabel" : "Sound",
+    "resetToDefaultsLabel" : "Reset to defaults",
+    "lightThemeLabel" : "Light Theme",
+    "darkThemeLabel" : "Dark Theme",
+
+    "timeRemainingLabel" : "Time remaining:"
+}

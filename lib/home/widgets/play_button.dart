@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:respiro/l10n/generated/app_localizations.dart';
 
 class PlayButton extends StatelessWidget {
   const PlayButton({
@@ -12,9 +13,10 @@ class PlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Tamaños dinamicos
+    final lcl = AppLocalizations.of(context)!;
     return IconButton(
       onPressed: onPressed,
-      tooltip: 'Iniciar sesión de respiración', // LANGT
+      tooltip: lcl.startSessionTooltip,
       icon: Icon(
         Icons.play_circle,
         size: 100,
