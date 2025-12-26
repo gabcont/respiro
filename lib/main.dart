@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:respiro/profiles/impl/repositories/profiles_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:respiro/profiles/profiles.dart';
@@ -11,6 +11,8 @@ import 'package:respiro/app/router/router.dart';
 import 'package:respiro/app/impl/navigation_service/gorouter_navigation_service.dart';
 import 'package:respiro/preferences/impl/repository/sp_preferences_repository_impl.dart';
 import 'package:respiro/profiles/impl/datasources/isar/profiles_isar_datasource.dart';
+import 'package:respiro/sound/impl/sound_service/soloud_sound_service.dart';
+import 'package:respiro/profiles/impl/repositories/profiles_repository_impl.dart';
 
 
 Future<void> main() async {
@@ -29,12 +31,18 @@ Future<void> main() async {
   final respiroRouter = RespiroRouter();
   final goNavService  = GoRouterNavigationService(goRouter: respiroRouter.router);
 
+  // Sound Service initialization
+  final soloud = SoLoud.instance;
+  await soloud.init();
+  final soloudSoundService = SoloudSoundService(soloud: soloud, isMuted: await preferencesRepository.getIsMuted());
+
   runApp(
     App(
+      appRouter: respiroRouter,
       preferencesRepository: preferencesRepository,
       profilesRepository: profilesRepository,
       navigationService: goNavService,
-      appRouter: respiroRouter,
+      soundService: soloudSoundService,
     ),
   );
 }

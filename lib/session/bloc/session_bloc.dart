@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:respiro/app/navigation_service/navigation_service.dart';
 
 import 'package:respiro/preferences/preferences.dart';
 import 'package:respiro/profiles/profiles.dart';
 import 'package:respiro/session/session.dart';
+import 'package:respiro/sound/sound_service.dart';
 
 part 'session_event.dart';
 part 'session_state.dart';
@@ -17,8 +17,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   final NavigationService navigationService;
   final PreferencesRepository preferencesRepository;
   final SessionTimerService timer;
-  AudioPlayer? _tickPlayer;
-  AudioPlayer? _phasePlayer;
+  final SoundService soundService;
+
   bool _audioDisabled = false;
   StreamSubscription? _streamSubscription;
 
@@ -28,6 +28,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     required Duration sessionDuration, 
     required this.timer,
     required this.navigationService,
+    required this.soundService,
   }) 
   : super(SessionState(
     profile: profile,
@@ -35,14 +36,13 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   )) {
     
     on<SessionStarted>((event, emit) async {
-      // Pre-initialize players to reduce latency
-      _tickPlayer ??= AudioPlayer()..setPlayerMode(PlayerMode.lowLatency);
-      // Use mediaPlayer for phases to avoid decoding issues with larger files
-      _phasePlayer ??= AudioPlayer()..setPlayerMode(PlayerMode.mediaPlayer);
-      
-      await _tickPlayer!.setVolume(0.5);
-      // Pre-load tick sound
-      await _tickPlayer!.setSource(AssetSource('sounds/tick1.mp3'));
+
+      // Load sounds
+      await soundService.loadAudioAsset(Sounds.secondPassed);
+      await soundService.loadAudioAsset(Sounds.exhalePhaseStarted);
+      await soundService.loadAudioAsset(Sounds.inhalePhaseStarted);
+      await soundService.loadAudioAsset(Sounds.holdPhaseStarted);
+    
 
       // Iniciar el temporizador
       timer.start(Duration(seconds: 1));
@@ -102,80 +102,55 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
 
     on<TimerTicked>((event, emit) {
       // Lógica para manejar el tick del temporizador
+
+      // Session Finished
       if(state.elapsedTime >= sessionDuration) {
         add(SessionCompleted());
         return;
       }
+
+      // Step changed
       if(state.elapsedTimeSinceLastStep.inSeconds >= state.currentStep.duration - 1) {
+        var nextStep = state.profile.steps[(state.profile.steps.indexOf(state.currentStep) + 1) % state.profile.steps.length];
         emit(state.copyWith(
           elapsedTime: event.elapsedTime,
           elapsedTimeSinceLastStep: Duration.zero,
           status: SessionStatus.stepChanged,
-          currentStep: state.profile.steps[(state.profile.steps.indexOf(state.currentStep) + 1) % state.profile.steps.length],
+          currentStep: nextStep,
         ));
-        _playPhase(
-          switch (state.currentStep.type) {
-            StepType.inhale => 'sounds/phase1.mp3',
-            StepType.hold => 'sounds/phase2.mp3',
-            StepType.exhale => 'sounds/phase3.mp3',
+        soundService.playSound(
+          switch (nextStep.type) {
+            StepType.inhale => Sounds.inhalePhaseStarted,
+            StepType.exhale => Sounds.exhalePhaseStarted,
+            StepType.hold => Sounds.holdPhaseStarted,
           }
         );
         return;
       }
+
+      // TODO: Refactorizar chequeo de tiempo
+      // IDK why this is here
       if(event.elapsedTime.inSeconds == state.elapsedTime.inSeconds) {
         return;
       }
       if(event.elapsedTime == Duration.zero) {
         return;
       }
-      //print(event.elapsedTime);
+
+      // Only Second Passed
       emit(state.copyWith(
         elapsedTime: event.elapsedTime,
         elapsedTimeSinceLastStep: state.elapsedTimeSinceLastStep + Duration(seconds: 1),
       ));
-      _playTick();
+      soundService.playSound(Sounds.secondPassed);
     });
   }
 
-  Future<void> _playTick() async {
-    if (_audioDisabled || isClosed) return;
-    try {
-      _tickPlayer ??= AudioPlayer()..setPlayerMode(PlayerMode.lowLatency);
-      // For lowLatency mode, resume() works best if the player was paused or stopped.
-      // However, simply calling play() is more robust for repeated sounds.
-      await _tickPlayer!.stop();
-      if (isClosed) return;
-      await _tickPlayer!.play(AssetSource('sounds/tick1.mp3'));
-    } catch (_) {
-      // Avoid crashing the session if audio fails for any reason.
-    }
-  }
-
-  Future<void> _playPhase(String path) async {
-    if (_audioDisabled || isClosed) return;
-    try {
-      // Use mediaPlayer for phases to avoid decoding issues with larger files
-      _phasePlayer ??= AudioPlayer()..setPlayerMode(PlayerMode.mediaPlayer);
-      await _phasePlayer!.stop();
-      if (isClosed) return;
-      await _phasePlayer!.play(AssetSource(path));
-    } catch (_) {
-      // Avoid crashing the session if audio fails for any reason.
-    }
-  }
 
   @override
   Future<void> close() async {
     _streamSubscription?.cancel();
     timer.stop();
-    try {
-      await _tickPlayer?.stop();
-      await _tickPlayer?.dispose();
-    } catch (_) {}
-    try {
-      await _phasePlayer?.stop();
-      await _phasePlayer?.dispose();
-    } catch (_) {}
     return super.close();
   }
 }

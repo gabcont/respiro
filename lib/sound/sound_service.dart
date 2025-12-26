@@ -6,8 +6,11 @@ enum Sounds{
 }
 
 abstract class SoundService {
-  void loadAudioAsset(Sounds sound);
-  void unloadAudioAsset(Sounds sound);
-  void playSound(Sounds sound);
+
+  void muteSound();
+  void unmuteSound();
+  Future<void> loadAudioAsset(Sounds sound);
+  Future<void> unloadAudioAsset(Sounds sound);
+  Future<void> playSound(Sounds sound);
   void dispose();
 }

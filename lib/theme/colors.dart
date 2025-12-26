@@ -41,7 +41,7 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
 
   // Valores por defecto su1geridos
   static const light = BreathingColors(
-    inhale: Color.fromARGB(255, 84, 146, 254),
+    inhale: Color.fromARGB(255, 85, 146, 254),
     exhale: Color(0xFFFFAB40),
     hold: Color(0xFF607D8B),
   );
