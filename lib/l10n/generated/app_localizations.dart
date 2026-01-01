@@ -176,12 +176,6 @@ abstract class AppLocalizations {
   /// **'Preferencias'**
   String get preferencesTitle;
 
-  /// No description provided for @customThemeLabel.
-  ///
-  /// In es, this message translates to:
-  /// **'Tema Personalizado'**
-  String get customThemeLabel;
-
   /// No description provided for @soundLabel.
   ///
   /// In es, this message translates to:
@@ -194,16 +188,28 @@ abstract class AppLocalizations {
   /// **'Restaurar valores de inicio'**
   String get resetToDefaultsLabel;
 
+  /// No description provided for @systemThemeLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Sistema'**
+  String get systemThemeLabel;
+
+  /// No description provided for @selectThemeLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar Tema'**
+  String get selectThemeLabel;
+
   /// No description provided for @lightThemeLabel.
   ///
   /// In es, this message translates to:
-  /// **'Tema Claro'**
+  /// **'Claro'**
   String get lightThemeLabel;
 
   /// No description provided for @darkThemeLabel.
   ///
   /// In es, this message translates to:
-  /// **'Tema Oscuro'**
+  /// **'Oscuro'**
   String get darkThemeLabel;
 
   /// No description provided for @timeRemainingLabel.

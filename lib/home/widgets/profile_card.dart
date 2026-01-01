@@ -25,6 +25,8 @@ class BreathingProfileCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Card(
+            color: Theme.of(context).colorScheme.surfaceBright,
+            surfaceTintColor: Colors.primaries[(profile.id * 3) % Colors.primaries.length],
             elevation: 4,
             //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: InkWell(

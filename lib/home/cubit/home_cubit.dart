@@ -25,7 +25,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   
-
   void onInitialized() async {
 
     // Emit loading state

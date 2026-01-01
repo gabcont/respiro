@@ -56,22 +56,22 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
 
   // Valores por defecto sugeridos
   static const light = BreathingColors(
-    inhalePrimary: Color.fromARGB(255, 109, 36, 234),
+    inhalePrimary: Color(0xFF42A5F5),
     inhaleSurface: Color(0xFFE3F2FD),
-    exhalePrimary: Color.fromARGB(255, 255, 198, 64),
+    exhalePrimary: Color(0xFFBA68C8),
     exhaleSurface: Color(0xFFFFF3E0),
-    holdPrimary: Color(0xFF607D8B),
+    holdPrimary: Color(0xFFF06292),
     holdSurface: Color(0xFFECEFF1),
   );
 
   static const dark = BreathingColors(
     // En modo oscuro, el primary es claro y vivo para contraste.
     // El surface es oscuro y profundo para no encandilar.
-    inhalePrimary: Color.fromARGB(255, 85, 146, 244),
+    inhalePrimary: Color(0xFF4FC3F7),
     inhaleSurface: Color(0xFF15202B),
-    exhalePrimary: Color.fromARGB(255, 231, 80, 30),
+    exhalePrimary: Color(0xFF26A69A),
     exhaleSurface: Color(0xFF2D2015),
-    holdPrimary: Color.fromARGB(255, 238, 238, 99),
+    holdPrimary: Color(0xFF5C6BC0),
     holdSurface: Color(0xFF263238),
   );
 

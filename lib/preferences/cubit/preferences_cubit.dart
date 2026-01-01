@@ -26,38 +26,17 @@ class PreferencesCubit extends Cubit<PreferencesState> {
 
   Future<void> loadPreferences() async {
     final isMuted = await preferencesRepository.getIsMuted();
-    final customThemeEnabled = await preferencesRepository.getCustomThemeEnabled();
     final themeMode = await preferencesRepository.getThemeMode();
     
     emit(state.copyWith(
       isMuted: isMuted,
-      customThemeEnabled: customThemeEnabled,
       themeMode: themeMode,
     ));
   }
 
-  void onCustomThemeEnabled() {
-    preferencesRepository.saveCustomThemeEnabled(true);
-    emit(state.copyWith(
-      customThemeEnabled: true,
-    ));
-  }
-
-  void onCustomThemeDisabled() {
-    preferencesRepository.saveCustomThemeEnabled(false);
-    emit(state.copyWith(
-      customThemeEnabled: false,
-    ));
-  }
-
-  void onDarkModeSelected() {
-    preferencesRepository.saveThemeMode(ThemeMode.dark);
-    emit(state.copyWith(themeMode: ThemeMode.dark));
-  }
-
-  void onLightModeSelected() {
-    preferencesRepository.saveThemeMode(ThemeMode.light);
-    emit(state.copyWith(themeMode: ThemeMode.light));
+  void onThemeModeChanged(ThemeMode mode) {
+    preferencesRepository.saveThemeMode(mode);
+    emit(state.copyWith(themeMode: mode));
   }
 
   void onMutedToggled() {

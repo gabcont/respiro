@@ -12,6 +12,7 @@ import 'package:respiro/home/cubit/home_cubit.dart';
 import 'package:respiro/l10n/generated/app_localizations.dart';
 
 import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/theme/cubit/theme_cubit.dart';
 import 'package:respiro/theme/theme.dart';
 
 class HomePage extends StatelessWidget {
@@ -50,6 +51,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   void _onProfileSelected(BuildContext context, int index, BreathingProfile profile) {
     context.read<HomeCubit>().onProfileSelected(index);
+    context.read<ThemeCubit>().updateAccentColor(Colors.primaries[index % Colors.primaries.length]);
     setState(() {
       backgroundWidget = AuroraBackground(
         aurorasRequested: _requestProfileAuroras(

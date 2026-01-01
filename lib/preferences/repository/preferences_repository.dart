@@ -12,10 +12,6 @@ import 'package:flutter/material.dart';
 abstract class PreferencesRepository {
   PreferencesRepository();
 
-  Future<void> saveCustomThemeEnabled(bool isEnabled);
-
-  Future<bool> getCustomThemeEnabled();
-
   Future<void> saveThemeMode(ThemeMode mode);
 
   Future<ThemeMode> getThemeMode();

@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:respiro/l10n/generated/app_localizations.dart';
 import 'package:respiro/app/router/router.dart';
+import 'package:respiro/theme/cubit/theme_cubit.dart';
 import 'package:respiro/theme/theme.dart';
 import 'package:respiro/preferences/preferences.dart';
 import 'package:respiro/profiles/profiles.dart';
@@ -37,12 +38,19 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: navigationService),
         RepositoryProvider.value(value: soundService),
       ],
-      child: BlocProvider(
-        create: (context) => PreferencesCubit(
-          soundService: context.read<SoundService>(),
-          profilesRepository: context.read<ProfilesRepository>(),
-          preferencesRepository: context.read<PreferencesRepository>(),
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => PreferencesCubit(
+              soundService: context.read<SoundService>(),
+              profilesRepository: context.read<ProfilesRepository>(),
+              preferencesRepository: context.read<PreferencesRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => ThemeCubit(context.read<PreferencesCubit>().state.themeMode),
+          ),
+        ],
         child: AppView(appRouter: appRouter),
       ),
     );
@@ -55,21 +63,21 @@ class AppView extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PreferencesCubit, PreferencesState>(
-      buildWhen: (previous, current) {
-        return previous.themeMode != current.themeMode || 
-               previous.customThemeEnabled != current.customThemeEnabled ||
-                previous.locale != current.locale;
-      },
+    final locale = context.select((PreferencesCubit cubit) => cubit.state.locale);
+    return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) {
         return MaterialApp.router(
+          // APP
           title: 'Respiro',
           debugShowCheckedModeBanner: false,
-          themeMode: state.customThemeEnabled ? state.themeMode : ThemeMode.system,
-          theme: RespiroTheme.lightTheme,
-          darkTheme: RespiroTheme.darkTheme,
-          routerConfig: appRouter.router,
-          locale: state.locale,
+
+          // THEME
+          themeMode: state.themeMode,
+          theme: state.lightThemeData,
+          darkTheme: state.darkThemeData,
+
+          // LOCALE
+          locale: locale,
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -77,6 +85,9 @@ class AppView extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
             AppLocalizations.delegate,
           ],
+
+          // ROUTER
+          routerConfig: appRouter.router,
         );
       },
     );

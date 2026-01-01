@@ -16,11 +16,12 @@
     "availableProfilesLabel" : "Perfiles Disponibles",
 
     "preferencesTitle" : "Preferencias",
-    "customThemeLabel" : "Tema Personalizado",
     "soundLabel" : "Sonido",
     "resetToDefaultsLabel" : "Restaurar valores de inicio",
-    "lightThemeLabel" : "Tema Claro",
-    "darkThemeLabel" : "Tema Oscuro",
+    "systemThemeLabel" : "Sistema",
+    "selectThemeLabel" : "Seleccionar Tema",
+    "lightThemeLabel" : "Claro",
+    "darkThemeLabel" : "Oscuro",
 
     "timeRemainingLabel" : "Tiempo restante:",
 

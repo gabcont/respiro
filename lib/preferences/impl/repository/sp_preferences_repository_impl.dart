@@ -20,7 +20,6 @@ class SPPreferencesRepositoryImpl implements PreferencesRepository {
   SPPreferencesRepositoryImpl({required this.preferencesRepository});
 
   static const _kIsMuted = 'is_muted';
-  static const _kIsCustomThemeEnabled = 'is_custom_theme_enabled';
   static const _kThemeMode = 'theme_mode';
   static const _kLastProfileSelected = 'last_profile_selected';
   static const _kIsFirstTime = 'is_first_time';
@@ -66,16 +65,6 @@ class SPPreferencesRepositoryImpl implements PreferencesRepository {
   Future<bool> getIsFirstTime() async {
     // Si no existe, devolvemos true (primera vez) por defecto
     return preferencesRepository.getBool(_kIsFirstTime) ?? true;
-  }
-  
-  @override
-  Future<bool> getCustomThemeEnabled() async {
-    return preferencesRepository.getBool(_kIsCustomThemeEnabled) ?? false;
-  }
-  
-  @override
-  Future<void> saveCustomThemeEnabled(bool isEnabled) async {
-    await preferencesRepository.setBool(_kIsCustomThemeEnabled, isEnabled);
   }
 
   @override

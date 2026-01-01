@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:respiro/l10n/generated/app_localizations.dart';
 
 import 'package:respiro/preferences/cubit/preferences_cubit.dart';
+import 'package:respiro/theme/cubit/theme_cubit.dart';
 
 class PreferencesPage extends StatelessWidget {
   const PreferencesPage({super.key});
@@ -20,22 +21,9 @@ class PreferencesPage extends StatelessWidget {
 class PreferencesView extends StatelessWidget {
   const PreferencesView({super.key});
 
-  void _onCustomThemeToggled(BuildContext context, bool isEnabled) {
-    if(isEnabled) {
-      context.read<PreferencesCubit>().onCustomThemeEnabled();  
-    }
-    else {
-      context.read<PreferencesCubit>().onCustomThemeDisabled();
-    }
-  }
-
   void _onThemeModeChanged(BuildContext context, ThemeMode mode) {
-    if(mode == ThemeMode.dark) {
-      context.read<PreferencesCubit>().onDarkModeSelected();
-    }
-    else if(mode == ThemeMode.light) {
-      context.read<PreferencesCubit>().onLightModeSelected();
-    }
+    context.read<PreferencesCubit>().onThemeModeChanged(mode);
+    context.read<ThemeCubit>().updateThemeMode(mode);
   }
 
   void _onSoundToggled(BuildContext context, bool isEnabled) {
@@ -55,29 +43,24 @@ class PreferencesView extends StatelessWidget {
       appBar: AppBar(title: Text(lcl.preferencesTitle)),
       body: BlocBuilder<PreferencesCubit, PreferencesState>(
         builder: (context, state) {
-          bool customThemeEnabled = state.customThemeEnabled;
           return Center(
             child: ListView(
               children: [
 
                 // Custom theme toggle
-                SwitchListTile(
-                  title: Text(lcl.customThemeLabel),
-                  value: customThemeEnabled, 
-                  onChanged: (value) => _onCustomThemeToggled(context, value),
-                ),
-
+                
                 // TODO: Agregar la opción de elegir un tema personalizado.
                 // Theme selector
-                customThemeEnabled ? ListTile(
-                  enabled: customThemeEnabled,
-                  enableFeedback: customThemeEnabled,
+                ListTile(
+                  title: Text(lcl.selectThemeLabel),
+                  titleAlignment: ListTileTitleAlignment.titleHeight,
+                  enabled: true,
+                  enableFeedback: false,
                   subtitle: ThemeSelector(
                     selected: state.themeMode,
                     onSelected: (mode) => _onThemeModeChanged(context, mode),
                   ),
-                )
-                : const SizedBox.shrink(),
+                ),
 
                 // Sound toggle
                 ListTile(
@@ -147,19 +130,26 @@ class ThemeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lcl = AppLocalizations.of(context)!;
-    return SegmentedButton<ThemeMode>(
-      segments: [
-        ButtonSegment(
-          value: ThemeMode.light,
-          label: Text(lcl.lightThemeLabel),
-        ),
-        ButtonSegment(
-          value: ThemeMode.dark,
-          label: Text(lcl.darkThemeLabel),
-        ),
-      ],
-      selected: {selected},
-      onSelectionChanged: (selection) => onSelected(selection.first),
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: SegmentedButton<ThemeMode>(
+        segments: [
+          ButtonSegment(
+            value: ThemeMode.light,
+            label: Text(lcl.lightThemeLabel),
+          ),
+          ButtonSegment(
+            value: ThemeMode.dark,
+            label: Text(lcl.darkThemeLabel),
+          ),
+          ButtonSegment(
+            value: ThemeMode.system,
+            label: Text(lcl.systemThemeLabel),
+          ),
+        ],
+        selected: {selected},
+        onSelectionChanged: (selection) => onSelected(selection.first),
+      ),
     );
   }
 }
