@@ -29,7 +29,10 @@ Future<void> main() async {
 
   // Navigation service initialization
   final respiroRouter = RespiroRouter();
-  final goNavService  = GoRouterNavigationService(goRouter: respiroRouter.router);
+  final goNavService  = GoRouterNavigationService(
+    goRouter: respiroRouter.router,
+    navigatorKey: respiroRouter.navigatorKey,
+  );
 
   // Sound Service initialization
   final soloud = SoLoud.instance;

@@ -19,7 +19,7 @@ class HomeBody extends StatelessWidget {
   }
 
   void _onPreferencesPressed(BuildContext context) {
-    context.read<HomeCubit>().onPreferencesEntered();
+    //context.read<HomeCubit>().onPreferencesEntered();
   }
 
   @override

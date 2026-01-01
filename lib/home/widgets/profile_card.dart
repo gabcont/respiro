@@ -1,48 +1,157 @@
 import 'package:flutter/material.dart';
 import 'package:respiro/profiles/profiles.dart';
 
-class ProfileCard extends StatelessWidget {
+
+class BreathingProfileCard extends StatelessWidget {
 
   final BreathingProfile profile;
-  final VoidCallback onPressed;
+  final VoidCallback onTap;
+  final double maxWidth;
 
-  const ProfileCard({
+  const BreathingProfileCard({
     super.key,
     required this.profile,
-    required this.onPressed
+    required this.onTap,
+    this.maxWidth = 600.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Tamaños dinamicos
-    return Card(
-      color: Theme.of(  context).colorScheme.primaryContainer,
-      margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-      child: ListTile(
-        leading: const Icon(Icons.air, size: 50,),
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(profile.title, style: Theme.of(context).textTheme.titleLarge),
-            Row(
-              children: profile.steps.map((step) => Text(
-                "${step.duration.toInt()}  ",
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: switch (step.type) {
-                    StepType.inhale => Colors.lightBlueAccent,
-                    StepType.hold => Colors.grey,
-                    StepType.exhale => Colors.redAccent,
-                  },
-                ),
-              )).toList(),
-            )
-          ],
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: maxWidth,
         ),
-        subtitle: Text(profile.shortDescription, style: Theme.of(context).textTheme.bodyLarge),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Card(
+            elevation: 4,
+            //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(12),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  // Si la altura disponible es poca, usamos el layout compacto
+                  if (constraints.maxHeight < 200) {
+                    return _buildCompactLayout(context);
+                  }
+                  return _buildExpandedLayout(context);
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Usar fl_chart para agregar visualización del perfil.
+  Widget _stepPreview(BreathingStep step) {
+
+    Alignment alignment;
+    Color color;
+    IconData icon;
+
+    switch (step.type) {
+        case StepType.inhale: 
+          alignment = Alignment.bottomCenter;
+          color = Colors.lightBlue;
+          icon = Icons.arrow_circle_up_rounded;
+          break;
+        case StepType.exhale:
+          alignment = Alignment.topCenter;
+          color = Colors.amber;
+          icon = Icons.arrow_circle_down_rounded;
+          break;
+        case StepType.hold: 
+          alignment = Alignment.center;
+          color = Colors.grey;
+          icon = Icons.arrow_circle_right_rounded;
+          break;
+    }
+    return Align(
+      alignment: alignment,
+      child: Container(
+        width: 30,
+        //height: (step.duration / 10) * 100, // Escalamos la altura
+        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+        /* decoration: ShapeDecoration(
+          shape: CircleBorder(),
+          color: color,
+        ), */
+        child: Icon(
+          icon,
+          color: color,
+          fill: 0.1,
+          opticalSize: step.duration * 10,
+          ),
+      ),
+    );
+  }
+
+
+  Widget _buildCompactLayout(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              profile.title,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: profile.steps.map(_stepPreview).toList(),
+            ),
+          )
+        ]
+      ),
+    );
+  }
+
+  // TODO: Cambiar color de acento de la app según el perfil seleccionado.
+  // TODO: Agregar arte generativo de fondo con colores únicos por perfil y efecto parallax.
+  // TODO: Agregar pestañas con Descripción, Beneficios, Técnica.
+  // TODO: Agregar preview.
+  Widget _buildExpandedLayout(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            flex: 1,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                profile.title,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: Text(
+              profile.longDescription,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.8),
+              ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.fade,
+            ),
+          ),
+        ],
       ),
     );
   }

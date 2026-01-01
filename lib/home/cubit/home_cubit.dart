@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:respiro/profiles/profiles.dart';
 import 'package:respiro/preferences/preferences.dart';
@@ -9,6 +10,12 @@ import 'package:respiro/app/navigation_service/navigation_service.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
+
+  StreamSubscription? _dbSuscription;
+  final ProfilesRepository profilesRepository;
+  final PreferencesRepository preferencesRepository;
+  final NavigationService navigationService;  
+
   HomeCubit({
     required this.preferencesRepository,
     required this.profilesRepository,
@@ -17,10 +24,7 @@ class HomeCubit extends Cubit<HomeState> {
     onInitialized();
   }
 
-  StreamSubscription? _dbSuscription;
-  final ProfilesRepository profilesRepository;
-  final PreferencesRepository preferencesRepository;
-  final NavigationService navigationService;
+  
 
   void onInitialized() async {
 
@@ -56,19 +60,24 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  void onPreferencesEntered() {
+  void onPreferencesPressed() {
     navigationService.goToPreferences();
   }
 
-  void onProfileSelected(int id) {
+
+  void onPreviewTabPressed(bool shouldAnimate) {
+    navigationService.goToPreview(shouldAnimate);
+  }
+
+  void onLibraryTabPressed() {
+    navigationService.goToLibrary();
+  }
+
+  void onProfileSelected(int id) async {
+    if(id < 0 || id >= state.breathingProfiles.length && id == state.selectedProfile) return;
     emit(state.copyWith(selectedProfile: id));
     preferencesRepository.saveLastProfileSelected(id);
   }
-
-  /* void onReloadProfileRepositoryConnection() async {
-    await _dbSuscription?.cancel();
-    _dbSuscription = profilesRepository.getProfiles().listen(_onFetchProfiles);
-  } */
 
   void _onFetchProfiles(List<BreathingProfile> newProfiles) {
     if(newProfiles.isEmpty) {

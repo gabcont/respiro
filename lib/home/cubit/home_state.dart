@@ -6,15 +6,18 @@ enum HomeStatus {
 }
 
 class HomeState extends Equatable {
+
+  final List<BreathingProfile> breathingProfiles;
+  final int selectedProfile;
+  final HomeStatus status;
+
   const HomeState({
     this.breathingProfiles = const <BreathingProfile>[], 
     this.selectedProfile = 0,
     this.status = HomeStatus.loading,
   });
 
-  final List<BreathingProfile> breathingProfiles;
-  final int selectedProfile;
-  final HomeStatus status;
+  
 
   HomeState copyWith({
     List<BreathingProfile>? breathingProfiles, 

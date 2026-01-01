@@ -13,7 +13,7 @@ class RespiroTheme {
   );
 
   static final ThemeData darkTheme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(seedColor:Colors.lightBlue, brightness: Brightness.dark),
+    colorScheme: ColorScheme.fromSeed(seedColor:Colors.blue, brightness: Brightness.dark),
     brightness: Brightness.dark,
     useMaterial3: true,
     extensions: [

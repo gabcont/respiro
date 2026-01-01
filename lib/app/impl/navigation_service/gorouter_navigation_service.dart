@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:respiro/profiles/profiles.dart';
@@ -6,13 +7,30 @@ import 'package:respiro/app/router/route_names.dart';
 
 
 class GoRouterNavigationService implements NavigationService{
-  final GoRouter goRouter;  
+  final GoRouter goRouter;
+  final GlobalKey<NavigatorState> navigatorKey;
 
-  GoRouterNavigationService({required this.goRouter});
+  GoRouterNavigationService({
+    required this.goRouter,
+    required this.navigatorKey,
+  });
 
   @override
   void goToHome() {
-    goRouter.pushNamed(RouteNames.home);
+    goRouter.goNamed(RouteNames.preview);
+  }
+
+  @override
+  void goToLibrary() {
+    goRouter.goNamed(RouteNames.library);
+  }
+
+  @override
+  void goToPreview(bool shouldAnimate) {
+    goRouter.goNamed(
+      RouteNames.preview,
+      extra: shouldAnimate,
+    );
   }
 
   @override

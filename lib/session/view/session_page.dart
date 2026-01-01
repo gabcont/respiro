@@ -11,11 +11,11 @@ import 'package:respiro/theme/theme.dart';
 Color getStepColor(StepType type, BuildContext context) {
   switch (type) {
     case StepType.inhale:
-      return Theme.of(context).extension<BreathingColors>()!.inhale!;
+      return Theme.of(context).extension<BreathingColors>()!.inhaleSurface!;
     case StepType.exhale:
-      return Theme.of(context).extension<BreathingColors>()!.exhale!;
+      return Theme.of(context).extension<BreathingColors>()!.exhaleSurface!;
     case StepType.hold:
-      return Theme.of(context).extension<BreathingColors>()!.hold!;
+      return Theme.of(context).extension<BreathingColors>()!.holdSurface!;
   }
 }
 
