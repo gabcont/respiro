@@ -1,5 +1,5 @@
-import 'package:respiro/profiles/profiles.dart';
-import 'package:respiro/profiles/impl/repositories/default_values/default_values.dart';
+import 'package:respiro/routines/routines.dart';
+import 'package:respiro/routines/impl/repositories/default_values/default_values.dart';
 
 class ProfilesRepositoryImpl implements ProfilesRepository {
   final BreathingProfilesDataSource dataSource;
@@ -7,12 +7,12 @@ class ProfilesRepositoryImpl implements ProfilesRepository {
   ProfilesRepositoryImpl(this.dataSource);
 
   @override
-  Future<void> addProfile(BreathingProfile profile) {
+  Future<void> addProfile(Routine profile) {
     return dataSource.addProfile(profile);
   }
 
   @override
-  Future<void> deleteProfile(BreathingProfile profile) {
+  Future<void> deleteProfile(Routine profile) {
     return dataSource.deleteProfile(profile);
   }
 
@@ -22,12 +22,12 @@ class ProfilesRepositoryImpl implements ProfilesRepository {
   }
 
   @override
-  Future<void> updateProfile(BreathingProfile profile) {
+  Future<void> updateProfile(Routine profile) {
     return dataSource.updateProfile(profile);
   }
 
   @override
-  Stream<List<BreathingProfile>> getProfiles() async* {
+  Stream<List<Routine>> getProfiles() async* {
     loadInitialValues();
     yield* dataSource.getProfiles();
   }
@@ -45,7 +45,7 @@ class ProfilesRepositoryImpl implements ProfilesRepository {
   @override
   Future<void> loadInitialValues() async {
     if(await isDatabaseEmpty()) {
-      List<BreathingProfile> initialProfiles = InitialProfiles.get();
+      List<Routine> initialProfiles = InitialProfiles.get();
       for (var profile in initialProfiles) {
         await addProfile(profile);
       }

@@ -8,7 +8,7 @@ sealed class SessionEvent extends Equatable {
 }
 
 final class SessionStarted extends SessionEvent {
-  final BreathingProfile profile;
+  final Routine profile;
   final Duration sessionDuration;
 
   const SessionStarted({

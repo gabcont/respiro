@@ -142,7 +142,7 @@ class _AuroraBackgroundState extends State<AuroraBackground>
           painter: AuroraPainter(
             animationValue: _controller.value,
             context: context,
-            blurIntensity: 20,
+            blurIntensity: 0,
           ),
         );
       },

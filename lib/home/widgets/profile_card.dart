@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 
 
 class BreathingProfileCard extends StatelessWidget {
 
-  final BreathingProfile profile;
+  final Routine profile;
   final VoidCallback onTap;
   final double maxWidth;
 
@@ -49,7 +49,7 @@ class BreathingProfileCard extends StatelessWidget {
   }
 
   // Usar fl_chart para agregar visualización del perfil.
-  Widget _stepPreview(BreathingStep step) {
+  Widget _stepPreview(SequenceStep step) {
 
     Alignment alignment;
     Color color;
@@ -71,6 +71,11 @@ class BreathingProfileCard extends StatelessWidget {
           color = Colors.grey;
           icon = Icons.arrow_circle_right_rounded;
           break;
+        case StepType.meditate:
+          alignment = Alignment.center;
+          color = Colors.purple;
+          icon = Icons.self_improvement;
+          break;
     }
     return Align(
       alignment: alignment,
@@ -86,7 +91,7 @@ class BreathingProfileCard extends StatelessWidget {
           icon,
           color: color,
           fill: 0.1,
-          opticalSize: step.duration * 10,
+          opticalSize: step.stepDuration * 10.0,
           ),
       ),
     );
@@ -94,6 +99,7 @@ class BreathingProfileCard extends StatelessWidget {
 
 
   Widget _buildCompactLayout(BuildContext context) {
+    final steps = profile.phases.isNotEmpty ? profile.phases.first.sequence?.steps ?? [] : <SequenceStep>[];
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Column(
@@ -101,7 +107,7 @@ class BreathingProfileCard extends StatelessWidget {
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              profile.title,
+              profile.rawName ?? '',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -112,7 +118,7 @@ class BreathingProfileCard extends StatelessWidget {
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: profile.steps.map(_stepPreview).toList(),
+              children: steps.map(_stepPreview).toList(),
             ),
           )
         ]
@@ -135,7 +141,7 @@ class BreathingProfileCard extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                profile.title,
+                profile.rawName ?? '',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -145,7 +151,7 @@ class BreathingProfileCard extends StatelessWidget {
           const SizedBox(height: 16),
           Expanded(
             child: Text(
-              profile.longDescription,
+              profile.rawLongDescription ?? '',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.8),
               ),

@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 
-part 'step_model.g.dart';
+part '../../profiles/profiles/domain/models/step_model.g.dart';
 
 enum StepType {
   inhale,

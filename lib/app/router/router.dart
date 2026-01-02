@@ -7,7 +7,7 @@ import 'package:respiro/app/router/route_names.dart';
 import 'package:respiro/preferences/cubit/preferences_cubit.dart';
 
 import 'package:respiro/session/session.dart';
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 import 'package:respiro/home/home.dart';
 import 'package:respiro/preferences/preferences.dart';
 
@@ -34,7 +34,7 @@ class RespiroRouter {
         builder: (context, state) => BlocProvider(
           create: (context) => HomeCubit(
             navigationService: context.read<NavigationService>(),
-            profilesRepository: context.read<ProfilesRepository>(),
+            profilesRepository: context.read<RoutinesRepository>(),
             preferencesRepository: context.read<PreferencesRepository>(),
           ),
           child: const HomePage(),
@@ -54,7 +54,7 @@ class RespiroRouter {
                   soundService: context.read<SoundService>(),
                   preferencesRepository: context.read<PreferencesRepository>(),
                   timer: StreamTimer(),
-                  profile: args['profile'] as BreathingProfile,
+                  profile: args['profile'] as Routine,
                   sessionDuration: Duration(
                     minutes: args['sessionDuration'] as int,
                   ),
@@ -68,7 +68,7 @@ class RespiroRouter {
               ),
             ],
             child: SessionPage(
-              activeProfile: args['profile'] as BreathingProfile,
+              activeProfile: args['profile'] as Routine,
               sessionDuration: Duration(
                 minutes: args['sessionDuration'] as int,
               ),

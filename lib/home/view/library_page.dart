@@ -5,11 +5,11 @@ import 'package:isar/isar.dart';
 import 'package:respiro/home/cubit/home_cubit.dart';
 import 'package:respiro/home/widgets/widgets.dart';
 
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 
 class LibraryPage extends StatefulWidget {
 
-  final void Function(BuildContext, int, BreathingProfile)? onProfileSelected;
+  final void Function(BuildContext, int, Routine)? onProfileSelected;
 
   const LibraryPage({
     super.key,

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:respiro/home/cubit/home_cubit.dart';
 import 'package:respiro/home/widgets/widgets.dart';
-import 'package:respiro/profiles/domain/models/profile_model.dart';
+import 'package:respiro/routines/routines.dart';
 
 class PreviewPage extends StatelessWidget {
 

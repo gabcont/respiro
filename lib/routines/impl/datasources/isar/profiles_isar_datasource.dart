@@ -1,5 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 
 class ProfilesIsarDataSource implements BreathingProfilesDataSource {
 
@@ -8,19 +8,19 @@ class ProfilesIsarDataSource implements BreathingProfilesDataSource {
   ProfilesIsarDataSource(this.isar);
 
   @override
-  Future<void> addProfile(BreathingProfile profile) async {
+  Future<void> addProfile(Routine profile) async {
     // Implement your logic to add a profile using Isar
     await isar.writeTxn(() async {
-      await isar.breathingProfiles.put( profile );
+      await isar.routines.put( profile );
     }
     );
   }
 
   @override
-  Future<void> deleteProfile(BreathingProfile profile) async {
+  Future<void> deleteProfile(Routine profile) async {
     // Implement your logic to delete a profile using Isar
     await isar.writeTxn(() async {
-      await isar.breathingProfiles.delete(profile.id);
+      await isar.routines.delete(profile.id);
     }
     );
   }
@@ -29,29 +29,29 @@ class ProfilesIsarDataSource implements BreathingProfilesDataSource {
   Future<void> deleteAllProfiles() async {
     // Implement your logic to delete all profiles using Isar
     await isar.writeTxn(() async {
-      await isar.breathingProfiles.clear();
+      await isar.routines.clear();
     });
   }
 
   @override
-  Future<void> updateProfile(BreathingProfile profile) async {
+  Future<void> updateProfile(Routine profile) async {
     // Implement your logic to update a profile using Isar
     await isar.writeTxn(() async {
-      await isar.breathingProfiles.put(profile);
+      await isar.routines.put(profile);
     
     }
     );
   }
 
   @override
-  Stream<List<BreathingProfile>> getProfiles() {
+  Stream<List<Routine>> getProfiles() {
     // Implement your logic to get profiles using Isar
-    return isar.breathingProfiles.where().watch(fireImmediately: true);
+    return isar.routines.where().watch(fireImmediately: true);
   }
 
   @override
   Future<int> databaseCount() async {
-    return await isar.breathingProfiles.count();
+    return await isar.routines.count();
   }
 
   @override

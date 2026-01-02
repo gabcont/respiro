@@ -7,7 +7,7 @@ import 'package:respiro/app/router/router.dart';
 import 'package:respiro/theme/cubit/theme_cubit.dart';
 import 'package:respiro/theme/theme.dart';
 import 'package:respiro/preferences/preferences.dart';
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 
 import 'package:respiro/sound/sound_service.dart';
 import 'package:respiro/app/navigation_service/navigation_service.dart';
@@ -17,14 +17,14 @@ class App extends StatelessWidget {
 
   final RespiroRouter appRouter;
   final PreferencesRepository preferencesRepository;
-  final ProfilesRepository profilesRepository;
+  final RoutinesRepository routinesRepository;
   final NavigationService navigationService;
   final SoundService soundService;
 
   const App({super.key, 
     required this.appRouter,
     required this.preferencesRepository,
-    required this.profilesRepository,
+    required this.routinesRepository,
     required this.navigationService,
     required this.soundService,
   });
@@ -33,7 +33,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider.value(value: profilesRepository),
+        RepositoryProvider.value(value: routinesRepository),
         RepositoryProvider.value(value: preferencesRepository),
         RepositoryProvider.value(value: navigationService),
         RepositoryProvider.value(value: soundService),
@@ -43,7 +43,7 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => PreferencesCubit(
               soundService: context.read<SoundService>(),
-              profilesRepository: context.read<ProfilesRepository>(),
+              profilesRepository: context.read<RoutinesRepository>(),
               preferencesRepository: context.read<PreferencesRepository>(),
             ),
           ),

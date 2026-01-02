@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:respiro/app/navigation_service/navigation_service.dart';
 
 import 'package:respiro/preferences/preferences.dart';
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 import 'package:respiro/session/session.dart';
 import 'package:respiro/sound/sound_service.dart';
 
@@ -20,19 +20,21 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   final SoundService soundService;
 
   StreamSubscription? _streamSubscription;
+  List<SequenceStep> _flatSteps = [];
 
   SessionBloc({
     required this.preferencesRepository, 
-    required BreathingProfile profile, 
+    required Routine profile, 
     required Duration sessionDuration, 
     required this.timer,
     required this.navigationService,
     required this.soundService,
-  }) 
-  : super(SessionState(
-    profile: profile,
-    currentStep: profile.steps.isNotEmpty ? profile.steps[0] : BreathingStep(),
-  )) {
+  }) : _flatSteps = _flattenRoutineStatic(profile),
+       super(SessionState(
+         profile: profile,
+         currentStep: _flattenRoutineStatic(profile).isNotEmpty ? _flattenRoutineStatic(profile)[0] : SequenceStep(),
+         currentStepIndex: 0,
+       )) {
     
     on<SessionStarted>((event, emit) async {
 
@@ -60,7 +62,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
         profile: event.profile,
         sessionDuration: event.sessionDuration,
         elapsedTime: Duration.zero,
-        currentStep: event.profile.steps.isNotEmpty ? event.profile.steps[0] : BreathingStep(),
+        currentStep: _flatSteps.isNotEmpty ? _flatSteps[0] : SequenceStep(),
+        currentStepIndex: 0,
       ));
     });
 
@@ -83,7 +86,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
         status: SessionStatus.reseted,
         elapsedTime: Duration.zero,
         elapsedTimeSinceLastStep: Duration.zero,
-        currentStep: state.profile.steps.isNotEmpty ? state.profile.steps[0] : BreathingStep(),
+        currentStep: _flatSteps.isNotEmpty ? _flatSteps[0] : SequenceStep(),
+        currentStepIndex: 0,
       ));
     });
 
@@ -100,25 +104,29 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
       // Lógica para manejar el tick del temporizador
 
       // Session Finished
-      if(state.elapsedTime >= sessionDuration) {
+      if(state.elapsedTime >= state.sessionDuration) {
         add(SessionCompleted());
         return;
       }
 
       // Step changed
-      if(state.elapsedTimeSinceLastStep.inSeconds >= state.currentStep.duration - 1) {
-        var nextStep = state.profile.steps[(state.profile.steps.indexOf(state.currentStep) + 1) % state.profile.steps.length];
+      if(state.elapsedTimeSinceLastStep.inSeconds >= state.currentStep.stepDuration - 1) {
+        var nextIndex = (state.currentStepIndex + 1) % _flatSteps.length;
+        var nextStep = _flatSteps[nextIndex];
+        
         emit(state.copyWith(
           elapsedTime: event.elapsedTime,
           elapsedTimeSinceLastStep: Duration.zero,
           status: SessionStatus.stepChanged,
           currentStep: nextStep,
+          currentStepIndex: nextIndex,
         ));
         soundService.playSound(
           switch (nextStep.type) {
             StepType.inhale => Sounds.inhalePhaseStarted,
             StepType.exhale => Sounds.exhalePhaseStarted,
             StepType.hold => Sounds.holdPhaseStarted,
+            StepType.meditate => Sounds.holdPhaseStarted,
           }
         );
         return;
@@ -141,6 +149,22 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
       soundService.playSound(Sounds.secondPassed);
     });
   }
+
+  static List<SequenceStep> _flattenRoutineStatic(Routine routine) {
+    List<SequenceStep> flatSteps = [];
+    for (var phase in routine.phases) {
+      if (phase.sequence != null) {
+        for (int i = 0; i < phase.cycles; i++) {
+          flatSteps.addAll(phase.sequence!.steps);
+        }
+      }
+    }
+    if (flatSteps.isEmpty) {
+      flatSteps.add(SequenceStep());
+    }
+    return flatSteps;
+  }
+
 
 
   @override

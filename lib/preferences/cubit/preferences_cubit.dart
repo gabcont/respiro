@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:respiro/l10n/locales.dart';
 import 'package:respiro/preferences/preferences.dart';
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 import 'package:respiro/sound/sound_service.dart';
 
 
@@ -12,7 +12,7 @@ part 'preferences_state.dart';
 
 class PreferencesCubit extends Cubit<PreferencesState> {
   
-  final ProfilesRepository profilesRepository;
+  final RoutinesRepository profilesRepository;
   final PreferencesRepository preferencesRepository;
   final SoundService soundService;
 
@@ -58,8 +58,8 @@ class PreferencesCubit extends Cubit<PreferencesState> {
   Future<void> onResetToDefaults() async {
     await preferencesRepository.saveLastProfileSelected(0);
     await preferencesRepository.saveIsFirstTime(true); 
-    await profilesRepository.deleteAllProfiles();
-    await profilesRepository.loadInitialValues();
+    await profilesRepository.deleteAllRoutines();
+    await profilesRepository.loadDefaultValues();
   }
 
 }

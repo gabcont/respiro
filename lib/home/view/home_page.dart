@@ -11,7 +11,7 @@ import 'package:respiro/home/widgets/widgets.dart';
 import 'package:respiro/home/cubit/home_cubit.dart';
 import 'package:respiro/l10n/generated/app_localizations.dart';
 
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 import 'package:respiro/theme/cubit/theme_cubit.dart';
 import 'package:respiro/theme/theme.dart';
 
@@ -49,7 +49,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     _selectedTabIndex = 0;
   }
 
-  void _onProfileSelected(BuildContext context, int index, BreathingProfile profile) {
+  void _onProfileSelected(BuildContext context, int index, Routine profile) {
     context.read<HomeCubit>().onProfileSelected(index);
     context.read<ThemeCubit>().updateAccentColor(Colors.primaries[index % Colors.primaries.length]);
     setState(() {
@@ -155,18 +155,20 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     );
   }
 
-  List<AuroraRequest> _requestProfileAuroras(BreathingProfile? profile) {
+  List<AuroraRequest> _requestProfileAuroras(Routine? profile) {
     if (profile == null) {
       return [];
     }
     //print(profile);
-    return profile.steps.map((step) {
+    final steps = profile.phases.isNotEmpty ? profile.phases.first.sequence?.steps ?? [] : <SequenceStep>[];
+    return steps.map((step) {
       return AuroraRequest(
-        size: step.duration * 30,
+        size: step.stepDuration * 30.0,
         color: switch (step.type) {
           StepType.inhale => Theme.of(context).extension<BreathingColors>()!.inhalePrimary!,
           StepType.exhale => Theme.of(context).extension<BreathingColors>()!.exhalePrimary!,
           StepType.hold => Theme.of(context).extension<BreathingColors>()!.holdPrimary!,
+          StepType.meditate => Theme.of(context).extension<BreathingColors>()!.holdPrimary!,
         },
       );
     }).toList();
