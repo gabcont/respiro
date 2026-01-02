@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:respiro/l10n/generated/app_localizations.dart';
 
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 
 class SessionBody extends StatelessWidget {
   const SessionBody({
@@ -15,7 +15,7 @@ class SessionBody extends StatelessWidget {
 
   final String minutes;
   final String seconds;
-  final BreathingStep step;
+  final SequenceStep step;
   final double stepSecondsRemaining;
   final AnimationController _controller;
 
@@ -26,6 +26,7 @@ class SessionBody extends StatelessWidget {
       StepType.inhale => lcl.inhale,
       StepType.exhale => lcl.exhale,
       StepType.hold => lcl.hold,
+      StepType.meditate => lcl.hold, // Default for meditate
     };
 
     return LayoutBuilder(
@@ -67,7 +68,7 @@ class SessionBody extends StatelessWidget {
               const Spacer(flex: 3),
 
               Text(
-                    step.description,
+                    step.rawDescription ?? '',
                     style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
               ),
@@ -86,6 +87,7 @@ class SessionBody extends StatelessWidget {
                       StepType.inhale => InhaleIndicator(value: value, size: indicatorSize),
                       StepType.exhale => ExhaleIndicator(value: value, size: indicatorSize),
                       StepType.hold => HoldIndicator(value: value, size: indicatorSize),
+                      StepType.meditate => HoldIndicator(value: value, size: indicatorSize), // Default for meditate
                     };
                   },
                 ),

@@ -16,11 +16,12 @@
     "availableProfilesLabel" : "Available Profiles",
 
     "preferencesTitle" : "Preferences",
-    "customThemeLabel" : "Custom Theme",
     "soundLabel" : "Sound",
     "resetToDefaultsLabel" : "Reset to defaults",
-    "lightThemeLabel" : "Light Theme",
-    "darkThemeLabel" : "Dark Theme",
+    "selectThemeLabel" : "Select Theme",
+    "lightThemeLabel" : "Light",
+    "darkThemeLabel" : "Dark",
+    "systemThemeLabel" : "System",
 
     "timeRemainingLabel" : "Time remaining:",
 

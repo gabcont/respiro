@@ -8,8 +8,9 @@ class SessionState extends Equatable {
   final Duration sessionDuration;
   final Duration elapsedTime;
   final Duration elapsedTimeSinceLastStep;
-  final BreathingProfile profile;
-  final BreathingStep currentStep;
+  final Routine profile;
+  final SequenceStep currentStep;
+  final int currentStepIndex;
 
   const SessionState({
     this.status = SessionStatus.initial,
@@ -18,6 +19,7 @@ class SessionState extends Equatable {
     this.elapsedTimeSinceLastStep = Duration.zero,
     required this.profile,
     required this.currentStep,
+    this.currentStepIndex = 0,
   });
 
   SessionState copyWith({
@@ -25,8 +27,9 @@ class SessionState extends Equatable {
     Duration? sessionDuration,
     Duration? elapsedTime,
     Duration? elapsedTimeSinceLastStep,
-    BreathingProfile? profile,
-    BreathingStep? currentStep,
+    Routine? profile,
+    SequenceStep? currentStep,
+    int? currentStepIndex,
   }) {
     return SessionState(
       status: status ?? this.status,
@@ -35,6 +38,7 @@ class SessionState extends Equatable {
       elapsedTimeSinceLastStep: elapsedTimeSinceLastStep ?? this.elapsedTimeSinceLastStep,
       profile: profile ?? this.profile,
       currentStep: currentStep ?? this.currentStep,
+      currentStepIndex: currentStepIndex ?? this.currentStepIndex,
     );
   }
 

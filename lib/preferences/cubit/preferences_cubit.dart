@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:respiro/l10n/locales.dart';
 import 'package:respiro/preferences/preferences.dart';
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 import 'package:respiro/sound/sound_service.dart';
 
 
@@ -12,7 +12,7 @@ part 'preferences_state.dart';
 
 class PreferencesCubit extends Cubit<PreferencesState> {
   
-  final ProfilesRepository profilesRepository;
+  final RoutinesRepository profilesRepository;
   final PreferencesRepository preferencesRepository;
   final SoundService soundService;
 
@@ -26,38 +26,17 @@ class PreferencesCubit extends Cubit<PreferencesState> {
 
   Future<void> loadPreferences() async {
     final isMuted = await preferencesRepository.getIsMuted();
-    final customThemeEnabled = await preferencesRepository.getCustomThemeEnabled();
     final themeMode = await preferencesRepository.getThemeMode();
     
     emit(state.copyWith(
       isMuted: isMuted,
-      customThemeEnabled: customThemeEnabled,
       themeMode: themeMode,
     ));
   }
 
-  void onCustomThemeEnabled() {
-    preferencesRepository.saveCustomThemeEnabled(true);
-    emit(state.copyWith(
-      customThemeEnabled: true,
-    ));
-  }
-
-  void onCustomThemeDisabled() {
-    preferencesRepository.saveCustomThemeEnabled(false);
-    emit(state.copyWith(
-      customThemeEnabled: false,
-    ));
-  }
-
-  void onDarkModeSelected() {
-    preferencesRepository.saveThemeMode(ThemeMode.dark);
-    emit(state.copyWith(themeMode: ThemeMode.dark));
-  }
-
-  void onLightModeSelected() {
-    preferencesRepository.saveThemeMode(ThemeMode.light);
-    emit(state.copyWith(themeMode: ThemeMode.light));
+  void onThemeModeChanged(ThemeMode mode) {
+    preferencesRepository.saveThemeMode(mode);
+    emit(state.copyWith(themeMode: mode));
   }
 
   void onMutedToggled() {
@@ -79,8 +58,8 @@ class PreferencesCubit extends Cubit<PreferencesState> {
   Future<void> onResetToDefaults() async {
     await preferencesRepository.saveLastProfileSelected(0);
     await preferencesRepository.saveIsFirstTime(true); 
-    await profilesRepository.deleteAllProfiles();
-    await profilesRepository.loadInitialValues();
+    await profilesRepository.deleteAllRoutines();
+    await profilesRepository.loadDefaultValues();
   }
 
 }

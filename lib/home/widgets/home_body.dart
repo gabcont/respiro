@@ -5,10 +5,10 @@ import 'package:respiro/home/cubit/home_cubit.dart';
 import 'package:respiro/home/widgets/widgets.dart';
 import 'package:respiro/l10n/generated/app_localizations.dart';
 
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 
 class HomeBody extends StatelessWidget {
-  final BreathingProfile selectedProfile;
+  final Routine selectedProfile;
   const HomeBody({
     super.key,
     required this.selectedProfile,
@@ -19,7 +19,7 @@ class HomeBody extends StatelessWidget {
   }
 
   void _onPreferencesPressed(BuildContext context) {
-    context.read<HomeCubit>().onPreferencesEntered();
+    //context.read<HomeCubit>().onPreferencesEntered();
   }
 
   @override

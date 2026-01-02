@@ -5,17 +5,19 @@ import 'package:respiro/session/widgets/widgets.dart';
 import 'package:respiro/session/bloc/session_bloc.dart';
 import 'package:respiro/session/audio_cubit/session_audio_cubit.dart';
 
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 import 'package:respiro/theme/theme.dart';
 
 Color getStepColor(StepType type, BuildContext context) {
   switch (type) {
     case StepType.inhale:
-      return Theme.of(context).extension<BreathingColors>()!.inhale!;
+      return Theme.of(context).extension<BreathingColors>()!.inhaleSurface!;
     case StepType.exhale:
-      return Theme.of(context).extension<BreathingColors>()!.exhale!;
+      return Theme.of(context).extension<BreathingColors>()!.exhaleSurface!;
     case StepType.hold:
-      return Theme.of(context).extension<BreathingColors>()!.hold!;
+      return Theme.of(context).extension<BreathingColors>()!.holdSurface!;
+    case StepType.meditate:
+      return Theme.of(context).extension<BreathingColors>()!.holdSurface!; // Default for meditate
   }
 }
 
@@ -26,7 +28,7 @@ class SessionPage extends StatefulWidget {
     super.key,
   });
 
-  final BreathingProfile activeProfile;
+  final Routine activeProfile;
   final Duration sessionDuration;
 
   @override
@@ -122,7 +124,7 @@ class _SessionPageState extends State<SessionPage>
               }
               _controller.reset();
               _controller.duration = Duration(
-                seconds: state.currentStep.duration.toInt(),
+                seconds: state.currentStep.stepDuration.toInt(),
               );
               _controller.forward();
               break;
@@ -136,7 +138,7 @@ class _SessionPageState extends State<SessionPage>
 
             case SessionStatus.stepChanged:
               _controller.duration = Duration(
-                seconds: state.currentStep.duration.toInt(),
+                seconds: state.currentStep.stepDuration.toInt(),
               );
               _controller.reset();
               if (!_controller.isAnimating) {
@@ -179,7 +181,7 @@ class _SessionPageState extends State<SessionPage>
                     .toString()
                     .padLeft(2, '0');
                 final stepSecondsRemaining =
-                    state.currentStep.duration -
+                    state.currentStep.stepDuration -
                     state.elapsedTimeSinceLastStep.inSeconds;
                 final isPaused = state.status == SessionStatus.paused;
                 final backgroundColor = getStepColor(
@@ -204,7 +206,7 @@ class _SessionPageState extends State<SessionPage>
                         minutes: minutes,
                         seconds: seconds,
                         step: state.currentStep,
-                        stepSecondsRemaining: stepSecondsRemaining,
+                        stepSecondsRemaining: stepSecondsRemaining.toDouble(),
                         controller: _controller,
                       ),
                     ),

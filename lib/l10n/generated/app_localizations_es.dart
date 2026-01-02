@@ -49,19 +49,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get preferencesTitle => 'Preferencias';
 
   @override
-  String get customThemeLabel => 'Tema Personalizado';
-
-  @override
   String get soundLabel => 'Sonido';
 
   @override
   String get resetToDefaultsLabel => 'Restaurar valores de inicio';
 
   @override
-  String get lightThemeLabel => 'Tema Claro';
+  String get systemThemeLabel => 'Sistema';
 
   @override
-  String get darkThemeLabel => 'Tema Oscuro';
+  String get selectThemeLabel => 'Seleccionar Tema';
+
+  @override
+  String get lightThemeLabel => 'Claro';
+
+  @override
+  String get darkThemeLabel => 'Oscuro';
 
   @override
   String get timeRemainingLabel => 'Tiempo restante:';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:respiro/l10n/generated/app_localizations.dart';
 
-import 'package:respiro/profiles/profiles.dart';
+import 'package:respiro/routines/routines.dart';
 
 class ProfilePreviewCard extends StatelessWidget {
   
-  final BreathingProfile? profile;
+  final Routine? profile;
   final bool isPortrait;
   final Widget playButton;
 
@@ -24,7 +24,7 @@ class ProfilePreviewCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          profile?.title ?? lcl.noProfileSelected, 
+          profile?.rawName ?? lcl.noProfileSelected, 
           style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
@@ -34,7 +34,7 @@ class ProfilePreviewCard extends StatelessWidget {
             alignment: WrapAlignment.center,
             spacing: 8.0,
             runSpacing: 8.0,
-            children: profile!.steps.map((step) => Container(
+            children: (profile!.phases.isNotEmpty ? profile!.phases.first.sequence?.steps ?? [] : <SequenceStep>[]).map((step) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
@@ -42,7 +42,7 @@ class ProfilePreviewCard extends StatelessWidget {
               ),
               child: Text(
                 // TODO: Verificar que no se pase de 60s y mostrar en min si es necesario
-                "${step.duration.toInt()} ${lcl.secondsAbbreviation}",
+                "${step.stepDuration.toInt()} ${lcl.secondsAbbreviation}",
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: switch (step.type) {
@@ -50,6 +50,7 @@ class ProfilePreviewCard extends StatelessWidget {
                     StepType.inhale => Colors.lightBlueAccent,
                     StepType.hold => Colors.grey,
                     StepType.exhale => Colors.redAccent,
+                    StepType.meditate => Colors.purpleAccent,
                   },
                 ),
               ),
@@ -57,7 +58,7 @@ class ProfilePreviewCard extends StatelessWidget {
           ),
         const SizedBox(height: 24),
         Text(
-          profile?.longDescription ?? lcl.pleaseSelectProfile,
+          profile?.rawLongDescription ?? lcl.pleaseSelectProfile,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
