@@ -8,7 +8,7 @@ class SequenceStep {
   @enumerated
   StepType type;
   
-  int stepDuration; // Duration in seconds? Assuming int based on request
+  int stepDuration; // Duration in milliseconds
   
   String? rawName;
   String? rawDescription;

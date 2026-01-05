@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO: Agregar colores para cada elemento que use colores personalizados en la app.
-
 @immutable
 class BreathingColors extends ThemeExtension<BreathingColors> {
   const BreathingColors({
@@ -11,6 +9,8 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
     required this.holdSurface,
     required this.exhalePrimary,
     required this.exhaleSurface,
+    required this.meditatePrimary,
+    required this.meditateSurface,
   });
 
   final Color? inhalePrimary;
@@ -19,6 +19,8 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
   final Color? holdSurface;
   final Color? exhalePrimary;
   final Color? exhaleSurface;
+  final Color? meditatePrimary;
+  final Color? meditateSurface;
 
   @override
   BreathingColors copyWith({
@@ -28,6 +30,8 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
     Color? holdSurface,
     Color? exhalePrimary,
     Color? exhaleSurface,
+    Color? meditatePrimary,
+    Color? meditateSurface,
   }) {
     return BreathingColors(
       inhalePrimary: inhalePrimary ?? this.inhalePrimary,
@@ -36,6 +40,8 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
       holdSurface: holdSurface ?? this.holdSurface,
       exhalePrimary: exhalePrimary ?? this.exhalePrimary,
       exhaleSurface: exhaleSurface ?? this.exhaleSurface,
+      meditatePrimary: meditatePrimary ?? this.meditatePrimary,
+      meditateSurface: meditateSurface ?? this.meditateSurface,
     );
   }
 
@@ -51,6 +57,8 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
       holdSurface: Color.lerp(holdSurface, other.holdSurface, t),
       exhalePrimary: Color.lerp(exhalePrimary, other.exhalePrimary, t),
       exhaleSurface: Color.lerp(exhaleSurface, other.exhaleSurface, t),
+      meditatePrimary: Color.lerp(meditatePrimary, other.exhaleSurface, t),
+      meditateSurface: Color.lerp(meditateSurface, other.exhaleSurface, t),
     );
   }
 
@@ -62,6 +70,8 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
     exhaleSurface: Color(0xFFFFF3E0),
     holdPrimary: Color(0xFFF06292),
     holdSurface: Color(0xFFECEFF1),
+    meditatePrimary: Color.fromARGB(255, 104, 200, 114),
+    meditateSurface: Color.fromARGB(255, 104, 200, 114),
   );
 
   static const dark = BreathingColors(
@@ -73,6 +83,8 @@ class BreathingColors extends ThemeExtension<BreathingColors> {
     exhaleSurface: Color(0xFF2D2015),
     holdPrimary: Color(0xFF5C6BC0),
     holdSurface: Color(0xFF263238),
+    meditatePrimary: Color.fromARGB(255, 104, 200, 114),
+    meditateSurface: Color.fromARGB(255, 104, 200, 114),
   );
 
 

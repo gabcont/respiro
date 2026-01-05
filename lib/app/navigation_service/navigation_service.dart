@@ -4,7 +4,7 @@ abstract class NavigationService {
   void goToHome();
   void goToLibrary();
   void goToPreview(bool shouldAnimate);
-  void goToBreathingSession(Routine profile, int minutes);
+  void goToSession(Routine routine);
   void goToPreferences();
   void goBack();
 }

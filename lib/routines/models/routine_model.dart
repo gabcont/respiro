@@ -33,4 +33,8 @@ class Routine {
     this.localizationKey,
     this.difficulty = Difficulty.easy,
   });
+
+  int get totalDuration {
+    return phases.fold(0, (sum, phase) => sum + phase.totalDuration);
+  }
 }

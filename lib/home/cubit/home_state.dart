@@ -7,30 +7,30 @@ enum HomeStatus {
 
 class HomeState extends Equatable {
 
-  final List<Routine> breathingProfiles;
-  final int selectedProfile;
+  final List<Routine> routines;
+  final int selectedRoutine;
   final HomeStatus status;
 
   const HomeState({
-    this.breathingProfiles = const <Routine>[], 
-    this.selectedProfile = 0,
+    this.routines = const <Routine>[], 
+    this.selectedRoutine = 0,
     this.status = HomeStatus.loading,
   });
 
   
 
   HomeState copyWith({
-    List<Routine>? breathingProfiles, 
-    int? selectedProfile,
+    List<Routine>? routines, 
+    int? selectedRoutine,
     HomeStatus? status,
   }) {
     return HomeState(
-      breathingProfiles: breathingProfiles ?? this.breathingProfiles,
-      selectedProfile: selectedProfile ?? this.selectedProfile,
+      routines: routines ?? this.routines,
+      selectedRoutine: selectedRoutine ?? this.selectedRoutine,
       status: status ?? this.status,
     );
   }  
 
   @override
-  List<Object> get props => [breathingProfiles, selectedProfile, status];
+  List<Object> get props => [routines, selectedRoutine, status];
 }

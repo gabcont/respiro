@@ -20,4 +20,8 @@ class Phase {
     this.rawDescription,
     this.localizationKey,
   });
+
+  int get totalDuration {
+    return sequence!.totalDuration * cycles;
+  }
 }

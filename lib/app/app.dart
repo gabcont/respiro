@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:respiro/l10n/generated/app_localizations.dart';
 import 'package:respiro/app/router/router.dart';
 import 'package:respiro/theme/cubit/theme_cubit.dart';
-import 'package:respiro/theme/theme.dart';
 import 'package:respiro/preferences/preferences.dart';
 import 'package:respiro/routines/routines.dart';
 
@@ -70,6 +69,10 @@ class AppView extends StatelessWidget {
           // APP
           title: 'Respiro',
           debugShowCheckedModeBanner: false,
+
+          // THEME ANIMATION
+          themeAnimationDuration: const Duration(milliseconds: 250),
+          themeAnimationCurve: Curves.easeInOut,
 
           // THEME
           themeMode: state.themeMode,

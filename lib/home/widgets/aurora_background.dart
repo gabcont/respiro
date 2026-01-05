@@ -33,11 +33,11 @@ void initRandomAurora(Point<double>? pos, Point<double>? movementVector, int? sp
       Random().nextDouble() * 400, // Assuming a default width
       Random().nextDouble() * 800  // Assuming a default height
   );
+  speed ??= 1 + Random().nextInt(1); // Speed between 1 and 5
   movementVector ??= Point(
-      (Random().nextDouble() - 0.5) * 2, // Random x movement between -1 and 1
-      (Random().nextDouble() - 0.5) * 2  // Random y movement between -1 and 1
+      (Random().nextDouble() - 0.5) * speed, // Random x movement between -1 and 1
+      (Random().nextDouble() - 0.5) * speed  // Random y movement between -1 and 1
   );
-  speed ??= 1 + Random().nextInt(2); // Speed between 1 and 5
   size ??= 50 + Random().nextDouble() * 100; // Size between
   color ??= Colors.primaries[Random().nextInt(Colors.primaries.length)];
   addAurora(pos, movementVector, speed, size, color);
@@ -102,7 +102,6 @@ class _AuroraBackgroundState extends State<AuroraBackground>
       initRandomAurora(null, null, null, null, Colors.green);
     }
     
-    // Un solo controlador para manejar el "tiempo" de la animación
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
@@ -142,7 +141,7 @@ class _AuroraBackgroundState extends State<AuroraBackground>
           painter: AuroraPainter(
             animationValue: _controller.value,
             context: context,
-            blurIntensity: 0,
+            blurIntensity: 50,
           ),
         );
       },
@@ -214,7 +213,6 @@ class AuroraPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant AuroraPainter oldDelegate) {
-    // Solo repintar si el valor de la animación cambió (siempre true en animación)
     return oldDelegate.animationValue != animationValue;
   }
 }

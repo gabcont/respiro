@@ -42,20 +42,19 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     // Set last selected profile
-    final lastProfileId = await preferencesRepository.getLastProfileSelected();
+    final lastRoutineId = await preferencesRepository.getLastProfileSelected();
 
-    if (lastProfileId != null && lastProfileId < state.breathingProfiles.length) {
-      emit(state.copyWith(selectedProfile: lastProfileId, status: HomeStatus.loaded));
+    if (lastRoutineId != null && lastRoutineId < state.routines.length) {
+      emit(state.copyWith(selectedRoutine: lastRoutineId, status: HomeStatus.loaded));
     }
     else {  // Set as 0 if null or out of range
-      emit(state.copyWith(selectedProfile: 0, status: HomeStatus.loaded));
+      emit(state.copyWith(selectedRoutine: 0, status: HomeStatus.loaded));
     }
   }
 
-  void onBreathingSessionStarted(Routine profile, int minutes) {
-    navigationService.goToBreathingSession(
-      profile,
-      minutes,
+  void onBreathingSessionStarted(Routine routine) {
+    navigationService.goToSession(
+      routine,
     );
   }
 
@@ -73,18 +72,18 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void onProfileSelected(int id) async {
-    if(id < 0 || id >= state.breathingProfiles.length && id == state.selectedProfile) return;
-    emit(state.copyWith(selectedProfile: id));
+    if(id < 0 || id >= state.routines.length && id == state.selectedRoutine) return;
+    emit(state.copyWith(selectedRoutine: id));
     preferencesRepository.saveLastProfileSelected(id);
   }
 
   void _onFetchProfiles(List<Routine> newProfiles) {
     if(newProfiles.isEmpty) {
-      emit(state.copyWith(breathingProfiles: [], status: HomeStatus.loading));
+      emit(state.copyWith(routines: [], status: HomeStatus.loading));
       //onReloadProfileRepositoryConnection();
       return;
     }
-    emit(state.copyWith(breathingProfiles: newProfiles, status: HomeStatus.loaded));
+    emit(state.copyWith(routines: newProfiles, status: HomeStatus.loaded));
   }
 
   @override
