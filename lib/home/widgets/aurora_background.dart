@@ -142,7 +142,7 @@ class _AuroraBackgroundState extends State<AuroraBackground>
           painter: AuroraPainter(
             animationValue: _controller.value,
             context: context,
-            blurIntensity: 0,
+            blurIntensity: 20,
           ),
         );
       },
@@ -214,7 +214,6 @@ class AuroraPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant AuroraPainter oldDelegate) {
-    // Solo repintar si el valor de la animación cambió (siempre true en animación)
     return oldDelegate.animationValue != animationValue;
   }
 }

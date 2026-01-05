@@ -34,12 +34,11 @@ class GoRouterNavigationService implements NavigationService{
   }
 
   @override
-  void goToBreathingSession(Routine profile, int minutes) {
+  void goToSession(Routine routine) {
     goRouter.pushNamed(
       RouteNames.breathingSession,
       extra: {
-        'profile': profile,
-        'sessionDuration': minutes,
+        'routine': routine,
       },
     );
   }

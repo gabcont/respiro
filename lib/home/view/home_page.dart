@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -39,27 +40,30 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   late int _selectedTabIndex;
-  late final TabController _tabController = TabController(length: 2, vsync: this);
-  late Widget? backgroundWidget = null;
+  late Widget? backgroundWidget;
+  late final List<ThemeData> routineslightThemes, routinesDarkThemes; 
 
   @override
   void initState() {
     super.initState();
     backgroundWidget = AuroraBackground();
     _selectedTabIndex = 0;
+    _createRoutinesThemes();
   }
 
-  void _onProfileSelected(BuildContext context, int index, Routine profile) {
+  void _onProfileSelected(BuildContext context, int index, Routine routine) {
     context.read<HomeCubit>().onProfileSelected(index);
-    context.read<ThemeCubit>().updateAccentColor(Colors.primaries[index % Colors.primaries.length]);
+    context.read<ThemeCubit>().updateThemeData(
+      routineslightThemes[index],
+      routinesDarkThemes[index],
+    );
     setState(() {
+      //print('Requesting auroras for routine: ${routine.rawName}');
       backgroundWidget = AuroraBackground(
         aurorasRequested: _requestProfileAuroras(
-          profile,
+          routine,
         ),
       );
-      //_selectedTabIndex = 0;
-      //_tabController.animateTo(0);
     });
   }
 
@@ -70,7 +74,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   void _onNavBarDestinationSelected(int index) {
     setState(() {
       _selectedTabIndex = index;
-      //_tabController.animateTo(index);
     });
   }
 
@@ -86,48 +89,14 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           appBar: AppBar(
             forceMaterialTransparency: true,
             actionsPadding: EdgeInsets.only(right: 8),
-            //backgroundColor : Colors.transparent,
-          /*  shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(10),
-              ),
-            ), */
             centerTitle: true,
-            title: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                //color: Theme.of(context).colorScheme.primaryContainer,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Text(lcl!.appName),
-            ),
-            
+            title: Text(lcl!.appName),
             actions: [
-              Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                //color: Theme.of(context).colorScheme.primaryContainer,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-              child: HomeBarActions(
+              HomeBarActions(
                 onPreferencesPressed: () => _onPreferencesPressed(context),
               ),
-              )
             ],
           ),
-          /* body: Stack(
-            children: [
-              AuroraBackground(),
-              TabBarView(
-                controller: _tabController,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  PreviewPage(),
-                  LibraryPage(),
-                ],
-              ),
-            ],
-          ), */
           bottomNavigationBar: NavigationBar(
             backgroundColor: Colors.transparent,
             animationDuration: Duration(milliseconds: 1000),
@@ -142,12 +111,20 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           body: Stack(
             children:[
               backgroundWidget ?? Container(),
-              <Widget>[
-                PreviewPage(),
-                LibraryPage(
-                  onProfileSelected: _onProfileSelected,
+              // TODO: Agregar animación de transición entre tabs
+              Positioned.fill(
+                child: IndexedStack(
+                  index: _selectedTabIndex,
+                  children: <Widget>[
+                    PreviewPage(),
+                    LibraryPage(
+                      onProfileSelected: _onProfileSelected,
+                      routinesLightThemes: routineslightThemes,
+                      routinesDarkThemes: routinesDarkThemes,
+                    ),
+                  ],
                 ),
-              ][_selectedTabIndex],
+              ),
             ]
           ),
         );
@@ -155,22 +132,59 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     );
   }
 
-  List<AuroraRequest> _requestProfileAuroras(Routine? profile) {
-    if (profile == null) {
+  List<AuroraRequest> _requestProfileAuroras(Routine? routine) {
+    if (routine == null) {
       return [];
     }
     //print(profile);
-    final steps = profile.phases.isNotEmpty ? profile.phases.first.sequence?.steps ?? [] : <SequenceStep>[];
+    final steps = routine.phases.isNotEmpty
+        ? routine.phases
+            .map((phase) => phase.sequence!.steps)
+            .expand((steps) => steps)
+            .toList()
+        : <SequenceStep>[];
+    final breathing = Theme.of(context).extension<BreathingColors>();
+    final fallback = Theme.of(context).colorScheme.primary;
+
     return steps.map((step) {
       return AuroraRequest(
-        size: step.stepDuration * 30.0,
+        size: clampDouble(step.stepDuration * 0.025, 50, 250),
         color: switch (step.type) {
-          StepType.inhale => Theme.of(context).extension<BreathingColors>()!.inhalePrimary!,
-          StepType.exhale => Theme.of(context).extension<BreathingColors>()!.exhalePrimary!,
-          StepType.hold => Theme.of(context).extension<BreathingColors>()!.holdPrimary!,
-          StepType.meditate => Theme.of(context).extension<BreathingColors>()!.holdPrimary!,
+          StepType.inhale => breathing?.inhalePrimary ?? fallback,
+          StepType.exhale => breathing?.exhalePrimary ?? fallback,
+          StepType.hold => breathing?.holdPrimary ?? fallback,
+          StepType.meditate => breathing?.meditatePrimary ?? fallback,
         },
       );
     }).toList();
+  }
+  
+  void _createRoutinesThemes() {
+    final Random random = Random();
+    final routineNumber = Colors.primaries.length;
+    routineslightThemes = List<ThemeData>.generate(
+      routineNumber,
+      (index) {
+        final seed = Colors.primaries[random.nextInt(Colors.primaries.length)];
+        return RespiroTheme.lightTheme.copyWith(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: seed,
+            brightness: Brightness.light,
+          ),
+        );
+      },
+    );
+    routinesDarkThemes = List<ThemeData>.generate(
+      routineNumber,
+      (index) {
+        final seed = Colors.primaries[random.nextInt(Colors.primaries.length)];
+        return RespiroTheme.darkTheme.copyWith(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: seed,
+            brightness: Brightness.dark,
+          ),
+        );
+      },
+    );
   }
 }

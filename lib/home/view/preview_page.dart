@@ -18,7 +18,7 @@ class PreviewPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            bool isProfileSelected = state.breathingProfiles.isNotEmpty && state.breathingProfiles.elementAtOrNull( state.selectedProfile) != null;
+            bool isProfileSelected = state.routines.isNotEmpty && state.routines.elementAtOrNull( state.selectedRoutine) != null;
             return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -26,10 +26,7 @@ class PreviewPage extends StatelessWidget {
                       constraints: BoxConstraints(
                         maxHeight: MediaQuery.of(context).size.height * 0.2,
                       ),
-                      child: BreathingProfileCard(
-                        profile: state.breathingProfiles[state.selectedProfile],
-                        onTap: () {},
-                      ),
+                      child: FlutterLogo()
                     ) : Container(),
                   ],
                 );

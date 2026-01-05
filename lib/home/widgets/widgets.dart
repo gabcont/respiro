@@ -1,6 +1,5 @@
-export 'home_body.dart';
 export 'home_bar_actions.dart';
-export 'profile_preview.dart';
-export 'play_button.dart';
-export 'profile_card.dart';
-export 'dock_handle.dart';
+export 'routine_preview.dart';
+export 'routine_card.dart';
+export 'pages_indicator.dart';
+export 'phase_preview.dart';
