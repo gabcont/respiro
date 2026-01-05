@@ -51,7 +51,7 @@ class _RoutineCardState extends State<RoutineCard> with TickerProviderStateMixin
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Card(
-                    color: themeData.colorScheme.surfaceContainerHighest.withAlpha(200),
+                    color: themeData.colorScheme.surfaceContainerHighest.withAlpha(230),
                     elevation: 0,
                     child: InkWell(
                       onTap: widget.onTap,
@@ -177,7 +177,7 @@ class DescriptionTab extends StatelessWidget {
   }
 }
 
-class PreviewTab extends StatelessWidget {
+class PreviewTab extends StatefulWidget {
   const PreviewTab({
     super.key,
     required this.routine,
@@ -186,13 +186,20 @@ class PreviewTab extends StatelessWidget {
   final Routine routine;
 
   @override
+  State<PreviewTab> createState() => _PreviewTabState();
+}
+
+class _PreviewTabState extends State<PreviewTab> {
+  bool _showPreview = false;
+
+  @override
   Widget build(BuildContext context) {
 
-    final shortDescription = routine.rawShortDescription?.trim();
+    final shortDescription = widget.routine.rawShortDescription?.trim();
 
     Widget previewWidget;
     previewWidget = RoutinePreviewCard(
-      routine: routine, 
+      routine: widget.routine, 
     );
 
     return Padding(
@@ -200,23 +207,34 @@ class PreviewTab extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              if (shortDescription != null && shortDescription.isNotEmpty)
+              if (!_showPreview && shortDescription != null && shortDescription.isNotEmpty) 
                 Text(
                   shortDescription,
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
-              if (shortDescription != null && shortDescription.isNotEmpty)
+                //Divider(),
+              if (!_showPreview && shortDescription != null && shortDescription.isNotEmpty)
                 const SizedBox(height: 16),
-              Divider(),
-              //TODO: No activar animación por defecto, usar algún trigger
-              previewWidget,
+              
+              
+              _showPreview 
+              ? previewWidget 
+              : ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _showPreview = true;
+                  });
+                }, 
+                child: Text('Show Preview'),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-}
+}   

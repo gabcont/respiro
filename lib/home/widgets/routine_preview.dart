@@ -45,41 +45,26 @@ class _RoutinePreviewCardState extends State<RoutinePreviewCard> {
   @override
   Widget build(BuildContext context) {
     final routine = widget.routine;
+    final isPortrait = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
     if (routine == null) {
       return const SizedBox.shrink();
     }
 
     return AspectRatio(
-      aspectRatio: 0.75,
+      aspectRatio: isPortrait ? 1.1 : 1.5,
       child: Column(
         children: [
           Expanded(
-            child: showPreview 
-            ?  RoutinePreview(
+            child: RoutinePreview(
               routine: routine,
                 previewPageController: _previewPageController,
             ) 
-            : Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    showPreview = true;
-                  });
-
-                  // Rebuild after the PageView attaches to the controller.
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (!mounted) return;
-                    setState(() {});
-                  });
-                },
-                child: Text('Show Preview'),
-              ),
-            ),
           ),
+          
           SizedBox(height: 16),
 
           // Phases Indicator
-          if(showPreview) PhasesPageIndicator(
+          PhasesPageIndicator(
             phasesCount: routine.phases.length,
             previewPageController: _previewPageController,
             onDotClicked: _onPageIndicatorClicked,

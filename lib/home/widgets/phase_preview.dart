@@ -197,6 +197,7 @@ class _PhasePreviewState extends State<PhasePreview> with SingleTickerProviderSt
     );
   }
 
+  // AI Generated function to compute effective window size.
   double _computeEffectiveWindow({
     required double windowSeconds,
     required double sequenceDurationSeconds,
@@ -209,6 +210,7 @@ class _PhasePreviewState extends State<PhasePreview> with SingleTickerProviderSt
     return math.max(6.0, math.min(clamped, sequenceDurationSeconds));
   }
 
+  // AI Generated function to build wrapped spots for seamless viewport.
   List<FlSpot> _buildWrappedSpots(EmbeddedSequence sequence, {required int repeats}) {
     final base = _buildSpots(sequence, 1);
     if (base.isEmpty) return const <FlSpot>[];

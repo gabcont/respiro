@@ -11,9 +11,6 @@ class PreferencesState extends Equatable {
   final ThemeMode themeMode;
   final bool isMuted;
 
-  // DUDA: ¿Es necesario cambiar esto?
-  final List<Locale> availableLocales = RespiroLocales().supportedLocales;
-
   PreferencesState copyWith({
     Locale? locale,
     bool? customThemeEnabled,
